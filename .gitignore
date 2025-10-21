@@ -1,0 +1,70 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Git
+*.orig
+*.rej
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+.venv/
+venv/
+.env
+.env.*
+dist/
+build/
+.mypy_cache/
+.pytest_cache/
+.pyright/
+.coverage
+htmlcov/
+
+# FastAPI uploads / temp
+backend/.cache/
+backend/app/tmp/
+backend/app/__pycache__/
+backend/app/services/__pycache__/
+backend/app/models/__pycache__/
+backend/app/**/*.log
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+frontend/.turbo/
+frontend/.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript
+frontend/**/*.tsbuildinfo
+
+# Docker
+docker-data/
+**/.dockerignore
+
+# DB / data
+data/
+*.db
+*.duckdb
+*.sqlite
+*.sqlite3
+
+# Secrets & keys
+*.key
+*.pem
+secrets.json
