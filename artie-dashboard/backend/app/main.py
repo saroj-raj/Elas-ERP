@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.config import settings
-from app.api.endpoints import upload, chat
 
+# ✅ FIX: import from backend.app...  (package-absolute)
+from backend.app.core.config import settings
+from backend.app.api.endpoints import upload, chat
 
 app = FastAPI(title=settings.app_name)
 
@@ -11,7 +12,6 @@ app.add_middleware(
     allow_origins=["*"], allow_credentials=True,
     allow_methods=["*"], allow_headers=["*"]
 )
-
 
 @app.get("/health")
 def health():
