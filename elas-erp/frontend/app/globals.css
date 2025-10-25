@@ -1,16 +1,19 @@
-/* Tailwind CSS - Using CDN for compatibility with Next.js 14 */
-@import url('https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --primary-green: #00C389;
+  --primary-green-hover: #00a877;
+  --slate: #1f2937;
+  --slate-hover: #111827;
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --text-primary: #ffffff;
+  --text-secondary: #6b7280;
+  --offwhite: #f9fafb;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+html, body {
+  height: 100%;
 }
