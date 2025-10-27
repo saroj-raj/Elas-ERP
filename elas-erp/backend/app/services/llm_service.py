@@ -1,6 +1,8 @@
 
 from typing import List, Dict
 import json, re
+from datetime import datetime
+from pathlib import Path
 
 from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
@@ -16,6 +18,17 @@ _llm = ChatGroq(
     max_retries=2,
 )
 
+# Log file in PROJECT ROOT
+ROOT_DIR = Path(__file__).parent.parent.parent.parent  # Go up to project root
+GROQ_LOG_FILE = ROOT_DIR / "GROQ_DEBUG.log"
+
+
+def log_to_file(message: str):
+    """Write message to Groq debug log file in project root"""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(GROQ_LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
 SYSTEM_PROMPT = """You propose concise, role-aware dashboard widgets.
 Input includes: domain, intent, columns, and sample stats.
 Output must be a JSON list of widget proposals:
@@ -26,28 +39,83 @@ Follow only what data supports. Do not invent fields."""
 
 
 def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -> List[Dict]:
+    log_to_file("="*80)
+    log_to_file("🧠 GROQ AI - propose_widgets called")
+    log_to_file("="*80)
+    
     user = {
         "domain": domain,
         "intent": intent,
         "columns": columns,
         "hints": hints,
     }
+    
+    log_to_file("\n📤 INPUT DATA SENT TO GROQ:")
+    log_to_file(f"   Domain: {domain}")
+    log_to_file(f"   Intent: {intent}")
+    log_to_file(f"   Columns: {columns}")
+    log_to_file(f"   Hints: {json.dumps(hints, indent=2)}")
+    log_to_file(f"\n   Full User Data:\n{json.dumps(user, indent=2)}")
+    
+    print(f"\n🧠 GROQ AI - propose_widgets called")
+    
+    user = {
+        "domain": domain,
+        "intent": intent,
+        "columns": columns,
+        "hints": hints,
+    }
+    
+    print(f"📤 Sending to Groq:")
+    print(f"   System prompt: {SYSTEM_PROMPT[:100]}...")
+    print(f"   User data: {user}")
+    
     msgs = [
         SystemMessage(content=SYSTEM_PROMPT),
         HumanMessage(content=f"DATA:\n{user}")
     ]
-    resp = _llm.invoke(msgs)
-    text = getattr(resp, "content", str(resp))
-    # crude fence removal
-    text = re.sub(r"^```json|```$", "", text.strip(), flags=re.M)
+    
     try:
-        out = json.loads(text)
-        if isinstance(out, list):
-            return out
-    except Exception:
-        pass
-
+        print("⏳ Waiting for Groq response...")
+        log_to_file("\n⏳ Calling Groq API...")
+        
+        resp = _llm.invoke(msgs)
+        text = getattr(resp, "content", str(resp))
+        
+        log_to_file("\n📥 GROQ RAW RESPONSE:")
+        log_to_file("-"*80)
+        log_to_file(text)
+        log_to_file("-"*80)
+        
+        print(f"📥 Groq raw response:")
+        print(f"   {text[:500]}...")
+        
+        # crude fence removal
+        text = re.sub(r"^```json|```$", "", text.strip(), flags=re.M)
+        
+        try:
+            out = json.loads(text)
+            if isinstance(out, list):
+                log_to_file(f"\n✅ Successfully parsed {len(out)} widgets from Groq")
+                log_to_file(f"   Widgets: {json.dumps(out, indent=2)}")
+                print(f"✅ Successfully parsed {len(out)} widgets from Groq")
+                return out
+            else:
+                log_to_file(f"\n⚠️ Groq returned non-list: {type(out)}")
+                print(f"⚠️ Groq returned non-list: {type(out)}")
+        except Exception as parse_error:
+            log_to_file(f"\n❌ JSON parse error: {parse_error}")
+            log_to_file(f"   Text: {text[:200]}...")
+            print(f"❌ JSON parse error: {parse_error}")
+            print(f"   Text: {text[:200]}...")
+    
+    except Exception as e:
+        log_to_file(f"\n❌ Groq API call failed: {e}")
+        print(f"❌ Groq API call failed: {e}")
+    
     # fallback simple rules
+    log_to_file("\n⚠️ Using fallback widget generation")
+    print("⚠️ Using fallback widget generation")
     base = []
     if hints.get("has_date") and hints.get("measures"):
         base.append({
@@ -67,4 +135,11 @@ def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -
             "group_by": None,
             "explanation": "Top contributors"
         })
-    return base[:3]
+    
+    fallback_widgets = base[:3]
+    log_to_file(f"\n🔄 Returning {len(fallback_widgets)} fallback widgets:")
+    log_to_file(f"   {json.dumps(fallback_widgets, indent=2)}")
+    log_to_file("="*80 + "\n")
+    
+    print(f"🔄 Returning {len(fallback_widgets)} fallback widgets")
+    return fallback_widgets

@@ -1,0 +1,294 @@
+[2025-10-27 19:08:37] 
+================================================================================
+[2025-10-27 19:08:37] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:08:37] ================================================================================
+[2025-10-27 19:08:37] 📁 File: test_sales_data.csv
+[2025-10-27 19:08:37] 🏢 Domain: Sales Analytics
+[2025-10-27 19:08:37] 🎯 Intent: Revenue Growth
+[2025-10-27 19:08:37] 💾 Saved to: app/tmp/uploads\cc3866f1-b987-4d7b-aec8-2b9fd8594d86_test_sales_data.csv
+[2025-10-27 19:08:37] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:08:37] --------------------------------------------------------------------------------
+[2025-10-27 19:08:37]         date   category  revenue  expenses  profit
+0 2024-01-01      Sales    50000     30000   20000
+1 2024-02-01      Sales    55000     32000   23000
+2 2024-03-01  Marketing    45000     28000   17000
+3 2024-04-01      Sales    60000     35000   25000
+4 2024-05-01  Marketing    48000     29000   19000
+[2025-10-27 19:08:37] --------------------------------------------------------------------------------
+[2025-10-27 19:08:37] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:08:37] ✅ Generated 2 widgets
+[2025-10-27 19:21:34] 
+================================================================================
+[2025-10-27 19:21:34] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:21:34] ================================================================================
+[2025-10-27 19:21:34] 📁 File: projects_data.csv
+[2025-10-27 19:21:34] 🏢 Domain: general
+[2025-10-27 19:21:34] 🎯 Intent: quick_viz
+[2025-10-27 19:21:34] 💾 Saved to: app/tmp/uploads\f634979c-0673-47b4-adfa-e5f92269788d_projects_data.csv
+[2025-10-27 19:21:34] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:21:34] --------------------------------------------------------------------------------
+[2025-10-27 19:21:34]   ProjectID             ProjectName        ClientName    ProjectManager  StartDate    EndDate  Budget  ActualCost  Revenue       Status Region
+0    PRJ001        Website Redesign         Acme Corp        John Smith 2025-01-15 2025-06-30  125000       98500   150000  In Progress  North
+1    PRJ002  Mobile App Development     TechStart Inc     Sarah Johnson 2025-02-01 2025-08-15  250000      180000   300000  In Progress  South
+2    PRJ003      CRM Implementation  Global Trade LLC  Michael Williams 2024-11-01 2025-04-30  180000      165000   220000  In Progress   East
+3    PRJ004         Cloud Migration  DataFlow Systems       Emily Brown 2025-01-10 2025-07-31  320000      245000   380000  In Progress   West
+4    PRJ005      ERP System Upgrade  Manufacturing Co       David Jones 2024-12-01 2025-05-31  450000           0   500000     Planning  North
+[2025-10-27 19:21:34] --------------------------------------------------------------------------------
+[2025-10-27 19:21:34] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:21:35] ✅ Generated 5 widgets
+[2025-10-27 19:23:17] 
+================================================================================
+[2025-10-27 19:23:17] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:23:17] ================================================================================
+[2025-10-27 19:23:17] 📁 File: accounts_receivable.csv
+[2025-10-27 19:23:17] 🏢 Domain: general
+[2025-10-27 19:23:17] 🎯 Intent: quick_viz
+[2025-10-27 19:23:17] 💾 Saved to: app/tmp/uploads\c9a9bc66-4044-4de8-9d30-a040436e8177_accounts_receivable.csv
+[2025-10-27 19:23:17] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:23:17] --------------------------------------------------------------------------------
+[2025-10-27 19:23:17]   AccountID        ClientName    ProjectManager  TotalReceivables  Current  Days30  Days60  Days90  Over90  HighRiskAmount  AgingPercentage    Status Priority
+0    ACC001         Acme Corp        John Smith            150000   120000   20000    8000    2000       0               0              0.0      Good      Low
+1    ACC002     TechStart Inc     Sarah Johnson            300000   250000   35000   10000    5000       0               0              0.0      Good      Low
+2    ACC003  Global Trade LLC  Michael Williams            220000   180000   25000   10000    5000       0               0              0.0      Good      Low
+3    ACC004  DataFlow Systems       Emily Brown            380000   320000   40000   15000    5000       0               0              0.0      Good      Low
+4    ACC005  Manufacturing Co       David Jones            500000   400000   60000   25000   10000    5000           15000              3.0  Moderate   Medium
+[2025-10-27 19:23:17] --------------------------------------------------------------------------------
+[2025-10-27 19:23:17] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:23:18] ✅ Generated 6 widgets
+[2025-10-27 19:23:37] 
+================================================================================
+[2025-10-27 19:23:37] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:23:37] ================================================================================
+[2025-10-27 19:23:37] 📁 File: projects_data.csv
+[2025-10-27 19:23:37] 🏢 Domain: general
+[2025-10-27 19:23:37] 🎯 Intent: quick_viz
+[2025-10-27 19:23:37] 💾 Saved to: app/tmp/uploads\e46df708-9bd6-4cbe-80bf-574f71cac14e_projects_data.csv
+[2025-10-27 19:23:37] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:23:37] --------------------------------------------------------------------------------
+[2025-10-27 19:23:37]   ProjectID             ProjectName        ClientName    ProjectManager  StartDate    EndDate  Budget  ActualCost  Revenue       Status Region
+0    PRJ001        Website Redesign         Acme Corp        John Smith 2025-01-15 2025-06-30  125000       98500   150000  In Progress  North
+1    PRJ002  Mobile App Development     TechStart Inc     Sarah Johnson 2025-02-01 2025-08-15  250000      180000   300000  In Progress  South
+2    PRJ003      CRM Implementation  Global Trade LLC  Michael Williams 2024-11-01 2025-04-30  180000      165000   220000  In Progress   East
+3    PRJ004         Cloud Migration  DataFlow Systems       Emily Brown 2025-01-10 2025-07-31  320000      245000   380000  In Progress   West
+4    PRJ005      ERP System Upgrade  Manufacturing Co       David Jones 2024-12-01 2025-05-31  450000           0   500000     Planning  North
+[2025-10-27 19:23:37] --------------------------------------------------------------------------------
+[2025-10-27 19:23:37] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:23:37] ✅ Generated 4 widgets
+[2025-10-27 19:23:56] 
+================================================================================
+[2025-10-27 19:23:56] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:23:56] ================================================================================
+[2025-10-27 19:23:56] 📁 File: projects_data.csv
+[2025-10-27 19:23:56] 🏢 Domain: general
+[2025-10-27 19:23:56] 🎯 Intent: quick_viz
+[2025-10-27 19:23:56] 💾 Saved to: app/tmp/uploads\2c80f15f-53ea-48c2-a69b-ad80c61afddb_projects_data.csv
+[2025-10-27 19:23:56] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:23:56] --------------------------------------------------------------------------------
+[2025-10-27 19:23:56]   ProjectID             ProjectName        ClientName    ProjectManager  StartDate    EndDate  Budget  ActualCost  Revenue       Status Region
+0    PRJ001        Website Redesign         Acme Corp        John Smith 2025-01-15 2025-06-30  125000       98500   150000  In Progress  North
+1    PRJ002  Mobile App Development     TechStart Inc     Sarah Johnson 2025-02-01 2025-08-15  250000      180000   300000  In Progress  South
+2    PRJ003      CRM Implementation  Global Trade LLC  Michael Williams 2024-11-01 2025-04-30  180000      165000   220000  In Progress   East
+3    PRJ004         Cloud Migration  DataFlow Systems       Emily Brown 2025-01-10 2025-07-31  320000      245000   380000  In Progress   West
+4    PRJ005      ERP System Upgrade  Manufacturing Co       David Jones 2024-12-01 2025-05-31  450000           0   500000     Planning  North
+[2025-10-27 19:23:56] --------------------------------------------------------------------------------
+[2025-10-27 19:23:56] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:23:57] ✅ Generated 5 widgets
+[2025-10-27 19:25:54] 
+================================================================================
+[2025-10-27 19:25:54] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:25:54] ================================================================================
+[2025-10-27 19:25:54] 📁 File: projects_data.csv
+[2025-10-27 19:25:54] 🏢 Domain: general
+[2025-10-27 19:25:54] 🎯 Intent: quick_viz
+[2025-10-27 19:25:54] 💾 Saved to: app/tmp/uploads\6ba5b6a4-0a51-4cc9-b833-8c663e93ff66_projects_data.csv
+[2025-10-27 19:25:54] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:25:54] --------------------------------------------------------------------------------
+[2025-10-27 19:25:54]   ProjectID             ProjectName        ClientName    ProjectManager  StartDate    EndDate  Budget  ActualCost  Revenue       Status Region
+0    PRJ001        Website Redesign         Acme Corp        John Smith 2025-01-15 2025-06-30  125000       98500   150000  In Progress  North
+1    PRJ002  Mobile App Development     TechStart Inc     Sarah Johnson 2025-02-01 2025-08-15  250000      180000   300000  In Progress  South
+2    PRJ003      CRM Implementation  Global Trade LLC  Michael Williams 2024-11-01 2025-04-30  180000      165000   220000  In Progress   East
+3    PRJ004         Cloud Migration  DataFlow Systems       Emily Brown 2025-01-10 2025-07-31  320000      245000   380000  In Progress   West
+4    PRJ005      ERP System Upgrade  Manufacturing Co       David Jones 2024-12-01 2025-05-31  450000           0   500000     Planning  North
+[2025-10-27 19:25:54] --------------------------------------------------------------------------------
+[2025-10-27 19:25:54] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:25:55] ✅ Generated 4 widgets
+[2025-10-27 19:29:27] 
+================================================================================
+[2025-10-27 19:29:27] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:29:27] ================================================================================
+[2025-10-27 19:29:27] 📁 File: projects_data.csv
+[2025-10-27 19:29:27] 🏢 Domain: general
+[2025-10-27 19:29:27] 🎯 Intent: quick_viz
+[2025-10-27 19:29:27] 💾 Saved to: app/tmp/uploads\ad942ea9-bc1a-4b8b-9217-95ee66ef2f35_projects_data.csv
+[2025-10-27 19:29:27] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:29:27] --------------------------------------------------------------------------------
+[2025-10-27 19:29:27]   ProjectID             ProjectName        ClientName    ProjectManager  StartDate    EndDate  Budget  ActualCost  Revenue       Status Region
+0    PRJ001        Website Redesign         Acme Corp        John Smith 2025-01-15 2025-06-30  125000       98500   150000  In Progress  North
+1    PRJ002  Mobile App Development     TechStart Inc     Sarah Johnson 2025-02-01 2025-08-15  250000      180000   300000  In Progress  South
+2    PRJ003      CRM Implementation  Global Trade LLC  Michael Williams 2024-11-01 2025-04-30  180000      165000   220000  In Progress   East
+3    PRJ004         Cloud Migration  DataFlow Systems       Emily Brown 2025-01-10 2025-07-31  320000      245000   380000  In Progress   West
+4    PRJ005      ERP System Upgrade  Manufacturing Co       David Jones 2024-12-01 2025-05-31  450000           0   500000     Planning  North
+[2025-10-27 19:29:27] --------------------------------------------------------------------------------
+[2025-10-27 19:29:27] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:29:28] ✅ Generated 6 widgets
+[2025-10-27 19:29:39] 
+================================================================================
+[2025-10-27 19:29:39] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:29:39] ================================================================================
+[2025-10-27 19:29:39] 📁 File: test_sales_data.csv
+[2025-10-27 19:29:39] 🏢 Domain: Sales Analytics
+[2025-10-27 19:29:39] 🎯 Intent: Revenue Growth
+[2025-10-27 19:29:39] 💾 Saved to: app/tmp/uploads\cbf8a0fa-97fe-4970-9245-21bac375fbbf_test_sales_data.csv
+[2025-10-27 19:29:39] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:29:39] --------------------------------------------------------------------------------
+[2025-10-27 19:29:39]         date   category  revenue  expenses  profit
+0 2024-01-01      Sales    50000     30000   20000
+1 2024-02-01      Sales    55000     32000   23000
+2 2024-03-01  Marketing    45000     28000   17000
+3 2024-04-01      Sales    60000     35000   25000
+4 2024-05-01  Marketing    48000     29000   19000
+[2025-10-27 19:29:39] --------------------------------------------------------------------------------
+[2025-10-27 19:29:39] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:29:40] ✅ Generated 5 widgets
+[2025-10-27 19:32:16] 
+================================================================================
+[2025-10-27 19:32:16] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:32:16] ================================================================================
+[2025-10-27 19:32:16] 📁 File: test_sales_data.csv
+[2025-10-27 19:32:16] 🏢 Domain: Test
+[2025-10-27 19:32:16] 🎯 Intent: Debug
+[2025-10-27 19:32:16] 💾 Saved to: app/tmp/uploads\f7d3fbd2-e641-4e99-bcfd-3202a4004f2b_test_sales_data.csv
+[2025-10-27 19:32:16] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:32:16] --------------------------------------------------------------------------------
+[2025-10-27 19:32:16]         date   category  revenue  expenses  profit
+0 2024-01-01      Sales    50000     30000   20000
+1 2024-02-01      Sales    55000     32000   23000
+2 2024-03-01  Marketing    45000     28000   17000
+3 2024-04-01      Sales    60000     35000   25000
+4 2024-05-01  Marketing    48000     29000   19000
+[2025-10-27 19:32:16] --------------------------------------------------------------------------------
+[2025-10-27 19:32:16] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:32:17] ✅ Generated 5 widgets
+[2025-10-27 19:34:54] 
+================================================================================
+[2025-10-27 19:34:54] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:34:54] ================================================================================
+[2025-10-27 19:34:54] 📁 File: test_sales_data.csv
+[2025-10-27 19:34:54] 🏢 Domain: Sales Test
+[2025-10-27 19:34:54] 🎯 Intent: Growth
+[2025-10-27 19:34:54] 💾 Saved to: app/tmp/uploads\f509135c-0f96-4a0b-8a8e-8812b5f1a72f_test_sales_data.csv
+[2025-10-27 19:34:54] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:34:54] --------------------------------------------------------------------------------
+[2025-10-27 19:34:54]         date   category  revenue  expenses  profit
+0 2024-01-01      Sales    50000     30000   20000
+1 2024-02-01      Sales    55000     32000   23000
+2 2024-03-01  Marketing    45000     28000   17000
+3 2024-04-01      Sales    60000     35000   25000
+4 2024-05-01  Marketing    48000     29000   19000
+[2025-10-27 19:34:54] --------------------------------------------------------------------------------
+[2025-10-27 19:34:54] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:34:55] ✅ Generated 6 widgets
+[2025-10-27 19:35:15] 
+================================================================================
+[2025-10-27 19:35:15] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:35:15] ================================================================================
+[2025-10-27 19:35:15] 📁 File: test_sales_data.csv
+[2025-10-27 19:35:15] 🏢 Domain: Test
+[2025-10-27 19:35:15] 🎯 Intent: Check
+[2025-10-27 19:35:15] 💾 Saved to: app/tmp/uploads\f4914650-38ce-4d17-b2df-c5a2ef60c0ec_test_sales_data.csv
+[2025-10-27 19:35:15] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:35:15] --------------------------------------------------------------------------------
+[2025-10-27 19:35:15]         date   category  revenue  expenses  profit
+0 2024-01-01      Sales    50000     30000   20000
+1 2024-02-01      Sales    55000     32000   23000
+2 2024-03-01  Marketing    45000     28000   17000
+3 2024-04-01      Sales    60000     35000   25000
+4 2024-05-01  Marketing    48000     29000   19000
+[2025-10-27 19:35:15] --------------------------------------------------------------------------------
+[2025-10-27 19:35:15] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:35:16] ✅ Generated 6 widgets
+[2025-10-27 19:35:23] 
+================================================================================
+[2025-10-27 19:35:23] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:35:23] ================================================================================
+[2025-10-27 19:35:23] 📁 File: test_sales_data.csv
+[2025-10-27 19:35:23] 🏢 Domain: Test
+[2025-10-27 19:35:23] 🎯 Intent: Debug
+[2025-10-27 19:35:23] 💾 Saved to: app/tmp/uploads\023b28a0-9805-4cd9-bb42-3371de284065_test_sales_data.csv
+[2025-10-27 19:35:23] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:35:23] --------------------------------------------------------------------------------
+[2025-10-27 19:35:23]         date   category  revenue  expenses  profit
+0 2024-01-01      Sales    50000     30000   20000
+1 2024-02-01      Sales    55000     32000   23000
+2 2024-03-01  Marketing    45000     28000   17000
+3 2024-04-01      Sales    60000     35000   25000
+4 2024-05-01  Marketing    48000     29000   19000
+[2025-10-27 19:35:23] --------------------------------------------------------------------------------
+[2025-10-27 19:35:23] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:35:24] ✅ Generated 5 widgets
+[2025-10-27 19:38:35] 
+================================================================================
+[2025-10-27 19:38:35] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:38:35] ================================================================================
+[2025-10-27 19:38:35] 📁 File: regional_sales.csv
+[2025-10-27 19:38:35] 🏢 Domain: general
+[2025-10-27 19:38:35] 🎯 Intent: quick_viz
+[2025-10-27 19:38:35] 💾 Saved to: app/tmp/uploads\11ca2359-0c6a-4bc6-b8eb-d4811e620525_regional_sales.csv
+[2025-10-27 19:38:35] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:38:35] --------------------------------------------------------------------------------
+[2025-10-27 19:38:35]     Region  TotalDeals  WonDeals  LostDeals  TotalWonAmount  TotalLostAmount  ConversionRate  MonthlyGoal  ActualMonthlySales  GoalAchievement  QuarterTarget  QuarterActual
+0    North         245       156         89        15840000          6230000           63.67      5500000             5280000            96.00       16500000       15840000
+1    South         298       189        109        18950000          7450000           63.42      6500000             6316667            97.18       19500000       18950000
+2     East         187        98         89        11760000         12890000           52.41      4200000             3920000            93.33       12600000       11760000
+3     West         276       175        101        17680000          6850000           63.41      6000000             5893333            98.22       18000000       17680000
+4  Central         223       142         81        14210000          5680000           63.68      4800000             4736667            98.68       14400000       14210000
+[2025-10-27 19:38:35] --------------------------------------------------------------------------------
+[2025-10-27 19:38:35] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:38:36] ✅ Generated 5 widgets
+[2025-10-27 19:41:13] 
+================================================================================
+[2025-10-27 19:41:13] 📤 NEW UPLOAD REQUEST
+[2025-10-27 19:41:13] ================================================================================
+[2025-10-27 19:41:13] 📁 File: projects_data.csv
+[2025-10-27 19:41:13] 🏢 Domain: general
+[2025-10-27 19:41:13] 🎯 Intent: quick_viz
+[2025-10-27 19:41:13] 💾 Saved to: app/tmp/uploads\edf0676c-a29d-4618-bf09-57926147d780_projects_data.csv
+[2025-10-27 19:41:13] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-27 19:41:13] --------------------------------------------------------------------------------
+[2025-10-27 19:41:13]   ProjectID             ProjectName        ClientName    ProjectManager  StartDate    EndDate  Budget  ActualCost  Revenue       Status Region
+0    PRJ001        Website Redesign         Acme Corp        John Smith 2025-01-15 2025-06-30  125000       98500   150000  In Progress  North
+1    PRJ002  Mobile App Development     TechStart Inc     Sarah Johnson 2025-02-01 2025-08-15  250000      180000   300000  In Progress  South
+2    PRJ003      CRM Implementation  Global Trade LLC  Michael Williams 2024-11-01 2025-04-30  180000      165000   220000  In Progress   East
+3    PRJ004         Cloud Migration  DataFlow Systems       Emily Brown 2025-01-10 2025-07-31  320000      245000   380000  In Progress   West
+4    PRJ005      ERP System Upgrade  Manufacturing Co       David Jones 2024-12-01 2025-05-31  450000           0   500000     Planning  North
+[2025-10-27 19:41:13] --------------------------------------------------------------------------------
+[2025-10-27 19:41:13] 
+🤖 Calling generate_quick_viz...
+[2025-10-27 19:41:14] ✅ Generated 5 widgets

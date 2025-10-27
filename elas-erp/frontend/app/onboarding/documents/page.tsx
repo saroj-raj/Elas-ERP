@@ -47,6 +47,13 @@ export default function DocumentUpload() {
     const item = { name: first.name, sizeKB: parseFloat((first.size / 1024).toFixed(2)), file: first };
     setUploadedFiles(prev => [item, ...prev]);
 
+    console.log('\n' + '='.repeat(80));
+    console.log('📤 FRONTEND - Upload started');
+    console.log('='.repeat(80));
+    console.log('📁 File:', first.name, `(${item.sizeKB} KB)`);
+    console.log('🏢 Domain:', domain || 'general');
+    console.log('🎯 Intent:', intent || 'quick_viz');
+
     // Immediately propose widgets against backend for first file
     try {
       const fd = new FormData();
@@ -54,13 +61,33 @@ export default function DocumentUpload() {
       fd.append('domain', domain || 'general');
       fd.append('intent', intent || 'quick_viz');
 
+      console.log('⏳ Sending to backend /api/upload...');
       const resp = await fetch(`${apiBase}/api/upload`, { method: 'POST', body: fd });
+      console.log(`📥 Response status: ${resp.status} ${resp.statusText}`);
+      
       if (!resp.ok) throw new Error(`Upload failed: ${resp.status}`);
+      
       const data = await resp.json();
+      console.log('📦 Response data:', data);
+      console.log(`   - Widgets: ${data.widgets?.length || 0}`);
+      console.log(`   - Preview rows: ${data.preview?.length || 0}`);
+      
+      if (data.widgets && data.widgets.length > 0) {
+        console.log('✨ Widget proposals:');
+        data.widgets.forEach((w: any, i: number) => {
+          console.log(`   ${i + 1}. ${w.title}`);
+          console.log(`      Vega spec:`, w.vega_spec);
+        });
+      }
+      
       setWidgets(data.widgets || []);
       setPreview(data.preview || []);
+      
+      console.log('✅ State updated successfully');
+      console.log('='.repeat(80) + '\n');
     } catch (e) {
-      console.error(e);
+      console.error('❌ Upload error:', e);
+      console.log('='.repeat(80) + '\n');
       alert('Upload failed. Please ensure backend is running.');
     }
   };

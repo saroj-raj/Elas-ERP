@@ -10,7 +10,7 @@ class Settings(BaseSettings):
 
     # LLM
     groq_api_key: str = Field(default="", alias="GROQ_API_KEY")
-    groq_model: str = Field(default="llama-3.1-70b-versatile", alias="GROQ_MODEL")
+    groq_model: str = Field(default="llama-3.3-70b-versatile", alias="GROQ_MODEL")  # Updated: llama-3.1 was decommissioned
 
     # Storage
     aws_region: str = Field(default="us-east-1", alias="AWS_REGION")
