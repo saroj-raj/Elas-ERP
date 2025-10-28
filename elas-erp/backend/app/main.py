@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # ✅ FIX: import from backend.app...  (package-absolute)
 from backend.app.core.config import settings
-from backend.app.api.endpoints import upload, chat, business, documents, ai
+from backend.app.api.endpoints import upload, chat, business, documents, ai, dashboard
 
 app = FastAPI(title=settings.app_name)
 
@@ -23,4 +23,5 @@ app.include_router(chat.router, prefix="/api", tags=["chat"])
 app.include_router(business.router, prefix="/api", tags=["business"])
 app.include_router(documents.router, prefix="/api", tags=["documents"])
 app.include_router(ai.router, prefix="/api", tags=["ai"])
+app.include_router(dashboard.router, prefix="/api", tags=["dashboard"])
 

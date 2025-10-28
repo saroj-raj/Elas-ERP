@@ -1,5 +1,5 @@
 
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import json, re
 from datetime import datetime
 from pathlib import Path
@@ -38,7 +38,10 @@ Output must be a JSON list of widget proposals:
 Follow only what data supports. Do not invent fields."""
 
 
-def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -> List[Dict]:
+def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -> Tuple[List[Dict], Dict, str]:
+    """
+    Returns: (widgets, groq_input, groq_response)
+    """
     log_to_file("="*80)
     log_to_file("🧠 GROQ AI - propose_widgets called")
     log_to_file("="*80)
@@ -50,6 +53,11 @@ def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -
         "hints": hints,
     }
     
+    groq_input_data = {
+        "system_prompt": SYSTEM_PROMPT,
+        "user_data": user
+    }
+    
     log_to_file("\n📤 INPUT DATA SENT TO GROQ:")
     log_to_file(f"   Domain: {domain}")
     log_to_file(f"   Intent: {intent}")
@@ -58,14 +66,6 @@ def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -
     log_to_file(f"\n   Full User Data:\n{json.dumps(user, indent=2)}")
     
     print(f"\n🧠 GROQ AI - propose_widgets called")
-    
-    user = {
-        "domain": domain,
-        "intent": intent,
-        "columns": columns,
-        "hints": hints,
-    }
-    
     print(f"📤 Sending to Groq:")
     print(f"   System prompt: {SYSTEM_PROMPT[:100]}...")
     print(f"   User data: {user}")
@@ -75,12 +75,15 @@ def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -
         HumanMessage(content=f"DATA:\n{user}")
     ]
     
+    groq_response_text = ""
+    
     try:
         print("⏳ Waiting for Groq response...")
         log_to_file("\n⏳ Calling Groq API...")
         
         resp = _llm.invoke(msgs)
         text = getattr(resp, "content", str(resp))
+        groq_response_text = text
         
         log_to_file("\n📥 GROQ RAW RESPONSE:")
         log_to_file("-"*80)
@@ -90,8 +93,20 @@ def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -
         print(f"📥 Groq raw response:")
         print(f"   {text[:500]}...")
         
-        # crude fence removal
-        text = re.sub(r"^```json|```$", "", text.strip(), flags=re.M)
+        # Extract JSON from markdown fences or plain text
+        # Handle cases like:
+        # "Here is the JSON:\n```json\n[...]\n```"
+        # or just "[...]"
+        json_match = re.search(r'```(?:json)?\s*(\[[\s\S]*?\])\s*```', text, re.MULTILINE)
+        if json_match:
+            text = json_match.group(1)
+            log_to_file(f"\n🔍 Extracted JSON from markdown fences")
+        else:
+            # Try to find JSON array directly
+            json_match = re.search(r'(\[[\s\S]*\])', text)
+            if json_match:
+                text = json_match.group(1)
+                log_to_file(f"\n🔍 Extracted JSON array directly")
         
         try:
             out = json.loads(text)
@@ -99,7 +114,7 @@ def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -
                 log_to_file(f"\n✅ Successfully parsed {len(out)} widgets from Groq")
                 log_to_file(f"   Widgets: {json.dumps(out, indent=2)}")
                 print(f"✅ Successfully parsed {len(out)} widgets from Groq")
-                return out
+                return out, groq_input_data, groq_response_text
             else:
                 log_to_file(f"\n⚠️ Groq returned non-list: {type(out)}")
                 print(f"⚠️ Groq returned non-list: {type(out)}")
@@ -142,4 +157,4 @@ def propose_widgets(domain: str, intent: str, columns: List[str], hints: Dict) -
     log_to_file("="*80 + "\n")
     
     print(f"🔄 Returning {len(fallback_widgets)} fallback widgets")
-    return fallback_widgets
+    return fallback_widgets, groq_input_data, groq_response_text or "Fallback mode - no Groq response"

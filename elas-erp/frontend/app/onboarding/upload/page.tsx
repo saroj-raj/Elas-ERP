@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -8,6 +8,22 @@ export default function UploadPage() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const [useHistoricalData, setUseHistoricalData] = useState(false);
+  const [domain, setDomain] = useState<string>('');
+  const [intent, setIntent] = useState<string>('');
+  const [isUploading, setIsUploading] = useState(false);
+
+  // Pre-fill domain from business info
+  useEffect(() => {
+    try {
+      const businessInfo = localStorage.getItem('businessInfo');
+      if (businessInfo) {
+        const parsed = JSON.parse(businessInfo);
+        setDomain(parsed.industry || parsed.businessName || '');
+      }
+    } catch (e) {
+      console.error('Failed to load business info:', e);
+    }
+  }, []);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -40,17 +56,67 @@ export default function UploadPage() {
   };
 
   const handleComplete = async () => {
-    if (uploadedFiles.length === 0) {
-      // No files uploaded - use historical data
-      localStorage.setItem('useHistoricalData', 'true');
-    } else {
-      // Save uploaded files info
-      localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles.map(f => f.name)));
-      localStorage.setItem('useHistoricalData', 'false');
+    if (uploadedFiles.length === 0 && !useHistoricalData) {
+      alert('Please upload at least one file or choose to use historical data');
+      return;
     }
-    
-    // Redirect to dashboard
-    router.push('/dashboard/admin');
+
+    if (uploadedFiles.length > 0 && (!domain || !intent)) {
+      alert('Please enter domain and intent for your data');
+      return;
+    }
+
+    // If no files, go directly to dashboard
+    if (uploadedFiles.length === 0) {
+      localStorage.setItem('useHistoricalData', 'true');
+      router.push('/dashboard/admin');
+      return;
+    }
+
+    // Call API directly from upload page
+    try {
+      setIsUploading(true);
+      
+      const formData = new FormData();
+      // Backend expects single 'file' parameter (not 'files')
+      // For now, upload only the first file
+      formData.append('file', uploadedFiles[0]);
+      formData.append('domain', domain);
+      formData.append('intent', intent);
+
+      console.log('📤 Uploading files to API...');
+      const response = await fetch('http://localhost:8000/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Upload failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('✅ Upload successful:', data);
+
+      // Store all data in localStorage for documents page
+      const filesMetadata = uploadedFiles.map(f => ({
+        name: f.name,
+        size: f.size,
+        type: f.type
+      }));
+      
+      localStorage.setItem('uploadedFilesMetadata', JSON.stringify(filesMetadata));
+      localStorage.setItem('uploadDomain', domain);
+      localStorage.setItem('uploadIntent', intent);
+      localStorage.setItem('uploadResponse', JSON.stringify(data));
+      
+      // Navigate to documents page with data
+      router.push('/onboarding/documents');
+      
+    } catch (err) {
+      console.error('❌ Upload error:', err);
+      alert('Failed to upload files. Please check if the backend is running and try again.');
+      setIsUploading(false);
+    }
   };
 
   const getFileIcon = (filename: string) => {
@@ -97,6 +163,44 @@ export default function UploadPage() {
           <div className="mb-6">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Upload your documents</h2>
             <p className="text-gray-600">Upload financial statements, invoices, or other business documents for AI analysis</p>
+          </div>
+
+          {/* Domain & Intent Fields */}
+          <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <h3 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
+              <span>🎯</span>
+              <span>Tell us about your data</span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Domain / Industry *
+                </label>
+                <input
+                  type="text"
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  placeholder="e.g., Sales, Finance, Marketing"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">What business area is this data from?</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Intent / Goal *
+                </label>
+                <input
+                  type="text"
+                  value={intent}
+                  onChange={(e) => setIntent(e.target.value)}
+                  placeholder="e.g., Revenue Growth, Cost Analysis"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">What insights are you looking for?</p>
+              </div>
+            </div>
           </div>
 
           {/* Upload Area */}
@@ -221,14 +325,16 @@ export default function UploadPage() {
             </Link>
             <button
               onClick={handleComplete}
-              disabled={uploadedFiles.length === 0 && !useHistoricalData}
+              disabled={uploadedFiles.length === 0 && !useHistoricalData || isUploading}
               className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {uploadedFiles.length > 0 
-                ? 'Complete Setup & Analyze'
-                : useHistoricalData
-                  ? 'Complete Setup with Historical Data'
-                  : 'Skip & Complete Setup'
+              {isUploading
+                ? 'Uploading & Processing...'
+                : uploadedFiles.length > 0 
+                  ? 'Complete Setup & Analyze'
+                  : useHistoricalData
+                    ? 'Complete Setup with Historical Data'
+                    : 'Skip & Complete Setup'
               }
             </button>
           </div>

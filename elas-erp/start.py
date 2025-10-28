@@ -9,7 +9,29 @@ import subprocess
 import webbrowser
 from pathlib import Path
 
+def kill_existing_servers():
+    """Kill any existing Node processes to avoid port conflicts"""
+    if os.name == 'nt':  # Windows
+        print("🧹 Stopping existing servers...")
+        try:
+            # Only kill node processes - don't kill Python (it kills this script!)
+            subprocess.run(['taskkill', '/F', '/IM', 'node.exe'], 
+                         capture_output=True, check=False)
+            print("✓ Cleaned up Node processes\n")
+        except Exception as e:
+            print(f"⚠ Could not kill processes: {e}\n")
+    else:  # Unix-like
+        try:
+            subprocess.run(['pkill', '-f', 'uvicorn'], check=False)
+            subprocess.run(['pkill', '-f', 'node'], check=False)
+            print("✓ Cleaned up old processes\n")
+        except:
+            pass
+
 print("\n🚀 ELAS ERP - Quick Start\n")
+
+# Kill existing servers first
+kill_existing_servers()
 
 # Paths
 ROOT = Path(__file__).parent.resolve()

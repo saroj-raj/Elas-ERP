@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import duckdb
 import pandas as pd
 
@@ -57,7 +57,10 @@ def vega_from_proposal(proposal: Dict) -> Dict:
     return spec
 
 
-def generate_quick_viz(csv_path: str, domain: str, intent: str) -> List[Dict]:
+def generate_quick_viz(csv_path: str, domain: str, intent: str) -> Tuple[List[Dict], Dict, str]:
+    """
+    Returns: (widgets, groq_input, groq_response)
+    """
     print(f"\n🚀 GENERATE_QUICK_VIZ called")
     print(f"   Domain: {domain}")
     print(f"   Intent: {intent}")
@@ -69,7 +72,7 @@ def generate_quick_viz(csv_path: str, domain: str, intent: str) -> List[Dict]:
     print(f"   Columns: {cols}")
     print(f"   Hints: {hints}")
     
-    props = propose_widgets(domain=domain, intent=intent, columns=cols, hints=hints)
+    props, groq_input, groq_response = propose_widgets(domain=domain, intent=intent, columns=cols, hints=hints)
     
     print(f"\n✨ Groq returned {len(props)} proposals:")
     for i, p in enumerate(props[:6], 1):
@@ -77,12 +80,35 @@ def generate_quick_viz(csv_path: str, domain: str, intent: str) -> List[Dict]:
     
     widgets = []
     for p in props[:6]:
+        # Map Groq chart types to frontend widget types
+        chart_type = p.get("chart", "bar").lower()
+        if chart_type in ["bar", "funnel", "treemap"]:
+            widget_type = "bar_chart"
+        elif chart_type == "line":
+            widget_type = "line_chart"
+        elif chart_type in ["pie", "donut"]:
+            widget_type = "pie_chart"
+        elif chart_type in ["kpi", "metric", "number"]:
+            widget_type = "kpi"
+        elif chart_type == "table":
+            widget_type = "table"
+        else:
+            widget_type = "bar_chart"  # default fallback
+        
         widgets.append({
+            "id": f"widget_{len(widgets) + 1}",
+            "type": widget_type,
             "title": p.get("title","Widget"),
             "explanation": p.get("explanation",""),
             "vega_spec": vega_from_proposal(p),
+            "config": {
+                "x_column": p.get("x"),
+                "y_column": p.get("y"),
+                "description": p.get("explanation","")
+            },
+            "data": {},  # Will be populated by frontend if needed
             "role": "auto",
         })
     
     print(f"✅ Generated {len(widgets)} widget specs\n")
-    return widgets
+    return widgets, groq_input, groq_response

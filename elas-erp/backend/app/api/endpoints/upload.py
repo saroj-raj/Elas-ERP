@@ -69,7 +69,7 @@ async def upload_file(
     # Generate widget proposals
     log_upload_info("\n🤖 Calling generate_quick_viz...")
     print("\n🤖 Calling generate_quick_viz...")
-    widgets = generate_quick_viz(csv_path=fpath, domain=domain, intent=intent)
+    widgets, groq_input, groq_response = generate_quick_viz(csv_path=fpath, domain=domain, intent=intent)
     log_upload_info(f"✅ Generated {len(widgets)} widgets")
     print(f"✅ Generated {len(widgets)} widgets")
 
@@ -101,12 +101,16 @@ async def upload_file(
         "preview": preview_rows,
         "domain": domain,
         "intent": intent,
+        "groq_input": groq_input,
+        "groq_response": groq_response,
     }
     
     print("\n📦 Response summary:")
     print(f"   - Dataset ID: {response_data['dataset_id']}")
     print(f"   - Widgets: {len(response_data['widgets'])}")
     print(f"   - Preview rows: {len(response_data['preview'])}")
+    print(f"   - Groq input: {len(str(groq_input))} chars")
+    print(f"   - Groq response: {len(groq_response)} chars")
     print("="*80 + "\n")
     
     return JSONResponse(response_data)
