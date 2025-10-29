@@ -859,3 +859,66 @@
 [2025-10-29 03:43:29] 
 🤖 Calling generate_quick_viz...
 [2025-10-29 03:43:30] ✅ Generated 4 widgets
+[2025-10-29 19:01:03] 
+================================================================================
+[2025-10-29 19:01:03] 📤 NEW UPLOAD REQUEST
+[2025-10-29 19:01:03] ================================================================================
+[2025-10-29 19:01:03] 📁 File: accounts_receivable.csv
+[2025-10-29 19:01:03] 🏢 Domain: Manufacturing
+[2025-10-29 19:01:03] 🎯 Intent: sales and revenue growth analysis 
+[2025-10-29 19:01:03] 💾 Saved to: app/tmp/uploads\7c645e66-fb4e-4195-8cd2-981d1a8a0fb1_accounts_receivable.csv
+[2025-10-29 19:01:03] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-29 19:01:03] --------------------------------------------------------------------------------
+[2025-10-29 19:01:03]   AccountID        ClientName    ProjectManager  TotalReceivables  Current  Days30  Days60  Days90  Over90  HighRiskAmount  AgingPercentage    Status Priority
+0    ACC001         Acme Corp        John Smith            150000   120000   20000    8000    2000       0               0              0.0      Good      Low
+1    ACC002     TechStart Inc     Sarah Johnson            300000   250000   35000   10000    5000       0               0              0.0      Good      Low
+2    ACC003  Global Trade LLC  Michael Williams            220000   180000   25000   10000    5000       0               0              0.0      Good      Low
+3    ACC004  DataFlow Systems       Emily Brown            380000   320000   40000   15000    5000       0               0              0.0      Good      Low
+4    ACC005  Manufacturing Co       David Jones            500000   400000   60000   25000   10000    5000           15000              3.0  Moderate   Medium
+[2025-10-29 19:01:03] --------------------------------------------------------------------------------
+[2025-10-29 19:01:03] 
+🤖 Calling generate_quick_viz...
+[2025-10-29 19:01:05] ✅ Generated 4 widgets
+[2025-10-29 19:20:50] 
+================================================================================
+[2025-10-29 19:20:50] 📤 NEW UPLOAD REQUEST
+[2025-10-29 19:20:50] ================================================================================
+[2025-10-29 19:20:50] 📁 File: accounts_receivable.csv
+[2025-10-29 19:20:50] 🏢 Domain: Manufacturing
+[2025-10-29 19:20:50] 🎯 Intent: sales and revenue growth analysis 
+[2025-10-29 19:20:50] 💾 Saved to: app/tmp/uploads\5972c92c-0d47-442c-8cc5-1a82c0250ccd_accounts_receivable.csv
+[2025-10-29 19:20:50] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-29 19:20:50] --------------------------------------------------------------------------------
+[2025-10-29 19:20:50]   AccountID        ClientName    ProjectManager  TotalReceivables  Current  Days30  Days60  Days90  Over90  HighRiskAmount  AgingPercentage    Status Priority
+0    ACC001         Acme Corp        John Smith            150000   120000   20000    8000    2000       0               0              0.0      Good      Low
+1    ACC002     TechStart Inc     Sarah Johnson            300000   250000   35000   10000    5000       0               0              0.0      Good      Low
+2    ACC003  Global Trade LLC  Michael Williams            220000   180000   25000   10000    5000       0               0              0.0      Good      Low
+3    ACC004  DataFlow Systems       Emily Brown            380000   320000   40000   15000    5000       0               0              0.0      Good      Low
+4    ACC005  Manufacturing Co       David Jones            500000   400000   60000   25000   10000    5000           15000              3.0  Moderate   Medium
+[2025-10-29 19:20:50] --------------------------------------------------------------------------------
+[2025-10-29 19:20:50] 
+🤖 Calling generate_quick_viz...
+[2025-10-29 19:20:51] ✅ Generated 4 widgets
+[2025-10-29 19:33:23] 
+================================================================================
+[2025-10-29 19:33:23] 📤 NEW UPLOAD REQUEST
+[2025-10-29 19:33:23] ================================================================================
+[2025-10-29 19:33:23] 📁 File: accounts_receivable.csv
+[2025-10-29 19:33:23] 🏢 Domain: Retail
+[2025-10-29 19:33:23] 🎯 Intent: sales and revenue growth analysis 
+[2025-10-29 19:33:23] 💾 Saved to: app/tmp/uploads\098724d6-798e-4615-a453-4f63e18fcd64_accounts_receivable.csv
+[2025-10-29 19:33:23] 
+📊 UPLOADED FILE PREVIEW (first 5 rows):
+[2025-10-29 19:33:23] --------------------------------------------------------------------------------
+[2025-10-29 19:33:23]   AccountID        ClientName    ProjectManager  TotalReceivables  Current  Days30  Days60  Days90  Over90  HighRiskAmount  AgingPercentage    Status Priority
+0    ACC001         Acme Corp        John Smith            150000   120000   20000    8000    2000       0               0              0.0      Good      Low
+1    ACC002     TechStart Inc     Sarah Johnson            300000   250000   35000   10000    5000       0               0              0.0      Good      Low
+2    ACC003  Global Trade LLC  Michael Williams            220000   180000   25000   10000    5000       0               0              0.0      Good      Low
+3    ACC004  DataFlow Systems       Emily Brown            380000   320000   40000   15000    5000       0               0              0.0      Good      Low
+4    ACC005  Manufacturing Co       David Jones            500000   400000   60000   25000   10000    5000           15000              3.0  Moderate   Medium
+[2025-10-29 19:33:23] --------------------------------------------------------------------------------
+[2025-10-29 19:33:23] 
+🤖 Calling generate_quick_viz...
+[2025-10-29 19:33:24] ✅ Generated 4 widgets

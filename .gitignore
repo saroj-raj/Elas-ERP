@@ -10,6 +10,16 @@ Thumbs.db
 *.orig
 *.rej
 
+# Archives & Compressed files (can be large)
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.bz2
+*.gz
+
 # Python
 __pycache__/
 *.py[cod]
@@ -64,6 +74,19 @@ pnpm-lock.yaml
 *.tsbuildinfo
 next-env.d.ts
 
+# Backup files
+*_backup.*
+*.backup
+*.bak
+*_old.*
+*.orig_copy
+
+# Documentation that may get outdated
+GROQ_DEBUGGING_GUIDE.md
+DEPLOYMENT_STATUS.md
+UPLOAD_FLOW_FIX.md
+SPRINT_*_PLAN.md
+
 # Docker
 docker-data/
 **/.dockerignore
@@ -80,7 +103,27 @@ data/
 !**/sample_data/**
 !**/example_data/**
 
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.mp3
+*.wav
+*.flac
+*.pdf
+*.psd
+*.ai
+
 # Secrets & keys
 *.key
 *.pem
 secrets.json
+
+# Build artifacts & cache
+dist/
+build/
+*.egg
+*.whl
+coverage/
+.coverage.*
