@@ -25,6 +25,16 @@ export default function RoleDashboard({ params }: { params: Promise<{ role: stri
   const [chatOpen, setChatOpen] = useState(false);
   const [chatMessage, setChatMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<Array<{ role: string; content: string }>>([]);
+  
+  // Placeholder chartData for metrics calculation
+  const chartData: ChartData[] = [
+    { month: 'Jan', revenue: 120, expenses: 80, profit: 40 },
+    { month: 'Feb', revenue: 150, expenses: 90, profit: 60 },
+    { month: 'Mar', revenue: 180, expenses: 100, profit: 80 },
+  ];
+  
+  // Placeholder insights
+  const insights = "Loading AI insights... Please upload your data files to see personalized insights.";
 
   const roleConfig = {
     admin: { name: 'Administrator', icon: '👑', color: 'blue' },
@@ -126,8 +136,6 @@ export default function RoleDashboard({ params }: { params: Promise<{ role: stri
     }
     */
   };
-
-  const metrics = chartData.length > 0 ? [
 
   const metrics = chartData.length > 0 ? [
     {
@@ -290,18 +298,12 @@ export default function RoleDashboard({ params }: { params: Promise<{ role: stri
                     <div className="animate-spin text-4xl mb-2">⚙️</div>
                     <p className="text-gray-600">Loading charts...</p>
                   </div>
+                </div>
               ) : (
-                <>{/* TODO: Re-enable charts */}</>
-                /*
-                <>
-                  <RevenueTrendChart data={chartData} />
-                  <div className="grid grid-cols-2 gap-4">
-                    <MonthlyRevenueChart data={chartData} />
-                    <ExpenseDistributionChart data={expenseData} />
-                  </div>
-                </>
-                */
-              )}</>
+                <div className="bg-white rounded-xl shadow-md p-6">
+                  <p className="text-gray-600 text-center">Charts will appear here after uploading data</p>
+                  {/* TODO: Re-enable charts once RevenueTrendChart, MonthlyRevenueChart, ExpenseDistributionChart are implemented */}
+                </div>
               )}
 
               {/* AI Insights */}

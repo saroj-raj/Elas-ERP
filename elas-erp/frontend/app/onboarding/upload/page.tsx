@@ -114,7 +114,31 @@ export default function UploadPage() {
       
     } catch (err) {
       console.error('❌ Upload error:', err);
-      alert('Failed to upload files. Please check if the backend is running and try again.');
+      
+      // Better error messages based on error type
+      let errorMessage = 'Failed to upload files. ';
+      
+      if (err instanceof Error) {
+        const errMsg = err.message.toLowerCase();
+        
+        if (errMsg.includes('networkerror') || errMsg.includes('failed to fetch')) {
+          errorMessage += 'Cannot reach the server. Please check if the backend is running on port 8000.';
+        } else if (errMsg.includes('unsupported file type')) {
+          errorMessage += 'One or more files have an unsupported format. Please use CSV, Excel, PDF, or Word files.';
+        } else if (errMsg.includes('parse') || errMsg.includes('parsing')) {
+          errorMessage += 'Could not read the file content. Please ensure the file is not corrupted and contains valid data.';
+        } else if (errMsg.includes('400')) {
+          errorMessage += 'Invalid file or data format. Please check your file and try again.';
+        } else if (errMsg.includes('500') || errMsg.includes('internal server error')) {
+          errorMessage += 'Server error occurred while processing. Please try again or contact support.';
+        } else {
+          errorMessage += err.message || 'Unknown error occurred.';
+        }
+      } else {
+        errorMessage += 'Unknown error occurred. Please try again.';
+      }
+      
+      alert(errorMessage);
       setIsUploading(false);
     }
   };
@@ -230,12 +254,19 @@ export default function UploadPage() {
                   multiple
                   onChange={handleFileChange}
                   className="hidden"
-                  accept=".pdf,.xlsx,.xls,.csv,.doc,.docx"
+                  accept=".pdf,.xlsx,.xls,.csv,.txt,.tsv,.doc,.docx"
                 />
               </label>
               <p className="text-sm text-gray-500 mt-4">
-                Supported formats: PDF, Excel, CSV, Word (Max 10MB per file)
+                Supported formats: PDF, Excel, CSV, TXT, Word • Max 10MB per file
               </p>
+              <div className="mt-3 flex items-center justify-center gap-2 flex-wrap">
+                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">✅ CSV</span>
+                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">✅ Excel</span>
+                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">✅ PDF</span>
+                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">✅ Word</span>
+                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">✅ TXT</span>
+              </div>
             </div>
           </div>
 
@@ -326,18 +357,60 @@ export default function UploadPage() {
             <button
               onClick={handleComplete}
               disabled={uploadedFiles.length === 0 && !useHistoricalData || isUploading}
-              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
-              {isUploading
-                ? 'Uploading & Processing...'
-                : uploadedFiles.length > 0 
-                  ? 'Complete Setup & Analyze'
-                  : useHistoricalData
-                    ? 'Complete Setup with Historical Data'
-                    : 'Skip & Complete Setup'
-              }
+              {isUploading ? (
+                <>
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span>Processing...</span>
+                </>
+              ) : uploadedFiles.length > 0 ? (
+                'Complete Setup & Analyze'
+              ) : useHistoricalData ? (
+                'Complete Setup with Historical Data'
+              ) : (
+                'Skip & Complete Setup'
+              )}
             </button>
           </div>
+
+          {/* Upload Progress Indicator */}
+          {isUploading && (
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0">
+                  <svg className="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-blue-900 mb-2">🤖 AI Processing Your Data</h4>
+                  <div className="space-y-2 text-sm text-blue-700">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+                      <span>Uploading files...</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+                      <span>Analyzing data structure...</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+                      <span>Generating smart visualizations...</span>
+                    </div>
+                  </div>
+                  <div className="mt-3 w-full bg-blue-200 rounded-full h-2 overflow-hidden">
+                    <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{width: '70%', transition: 'width 0.5s'}}></div>
+                  </div>
+                  <p className="mt-2 text-xs text-blue-600">This may take 10-30 seconds depending on file size...</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

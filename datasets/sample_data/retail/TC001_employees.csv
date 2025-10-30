@@ -1,0 +1,16 @@
+employee_id,employee_name,role,hire_date,hourly_rate
+EMP-001,Employee 1,Cashier,2021-03-30,23.12
+EMP-002,Employee 2,Stock Clerk,2020-02-14,22.69
+EMP-003,Employee 3,Stock Clerk,2023-02-07,19.23
+EMP-004,Employee 4,Cashier,2023-03-16,13.23
+EMP-005,Employee 5,Cashier,2022-07-31,14.03
+EMP-006,Employee 6,Cashier,2021-06-26,23.57
+EMP-007,Employee 7,Cashier,2021-05-26,15.33
+EMP-008,Employee 8,Manager,2021-09-07,19.42
+EMP-009,Employee 9,Cashier,2023-03-11,21.55
+EMP-010,Employee 10,Cashier,2024-01-21,22.31
+EMP-011,Employee 11,Cashier,2020-12-20,22.73
+EMP-012,Employee 12,Stock Clerk,2023-11-13,19.49
+EMP-013,Employee 13,Stock Clerk,2020-07-14,20.35
+EMP-014,Employee 14,Stock Clerk,2020-03-17,22.51
+EMP-015,Employee 15,Manager,2022-02-20,22.14

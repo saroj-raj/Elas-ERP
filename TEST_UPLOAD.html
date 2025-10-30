@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Test - Bypassing Frontend Cache</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background: #45a049; }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            display: none;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Direct Upload Test (No Cache)</h1>
+        <p>This bypasses your frontend's cached JavaScript to test if the backend works.</p>
+        
+        <form id="uploadForm">
+            <label><b>Select CSV/Excel File:</b></label>
+            <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" required>
+            
+            <label><b>Domain:</b></label>
+            <input type="text" id="domain" placeholder="e.g., Sales, Finance" value="Test Domain" required>
+            
+            <label><b>Intent:</b></label>
+            <input type="text" id="intent" placeholder="e.g., Revenue Analysis" value="Test Intent" required>
+            
+            <button type="submit">🚀 Upload & Test Backend</button>
+        </form>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = '⏳ Uploading...';
+            
+            const fileInput = document.getElementById('fileInput');
+            const domain = document.getElementById('domain').value;
+            const intent = document.getElementById('intent').value;
+            
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('domain', domain);
+            formData.append('intent', intent);
+            
+            try {
+                console.log('📤 Sending to: http://localhost:8000/api/upload');
+                const response = await fetch('http://localhost:8000/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('✅ Success:', data);
+                
+                resultDiv.innerHTML = `
+                    <h3>✅ SUCCESS! Backend is working!</h3>
+                    <p><b>Dataset ID:</b> ${data.dataset_id}</p>
+                    <p><b>Widgets generated:</b> ${data.widgets ? data.widgets.length : 0}</p>
+                    <p><b>Domain:</b> ${data.domain}</p>
+                    <p><b>Intent:</b> ${data.intent}</p>
+                    <hr>
+                    <p style="color: green;"><b>🎉 The backend works perfectly!</b></p>
+                    <p>The issue is your browser cache on localhost:4000</p>
+                    <p><b>FIX:</b> Press <code>Ctrl + Shift + Delete</code>, clear cache, then reload localhost:4000</p>
+                `;
+            } catch (error) {
+                console.error('❌ Error:', error);
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <h3>❌ Error</h3>
+                    <p><b>Message:</b> ${error.message}</p>
+                    <p>If you see network error, make sure backend is running:</p>
+                    <pre>python elas-erp/start.py</pre>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

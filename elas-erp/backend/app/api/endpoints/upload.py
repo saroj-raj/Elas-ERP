@@ -4,9 +4,11 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from fastapi.responses import JSONResponse
 import duckdb
 import numpy as np
+import pandas as pd
 from datetime import datetime
 from pathlib import Path
 from backend.app.services.dashboard_generator import generate_quick_viz
+from backend.app.services.file_parsers import parse_file, validate_dataframe
 
 router = APIRouter()
 
@@ -45,8 +47,21 @@ async def upload_file(
     print(f"🏢 Domain: {domain}")
     print(f"🎯 Intent: {intent}")
     
-    if not file.filename or not file.filename.lower().endswith((".csv",".tsv",".txt",".xlsx",".xls")):
-        raise HTTPException(status_code=400, detail="Only CSV/TSV/XLSX supported in demo")
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="No filename provided")
+    
+    # Get file extension
+    file_ext = file.filename.lower().split('.')[-1] if '.' in file.filename else ''
+    supported_exts = ['csv', 'tsv', 'txt', 'xlsx', 'xls', 'pdf', 'docx', 'doc']
+    
+    if file_ext not in supported_exts:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Unsupported file type: .{file_ext}. Supported: {', '.join(supported_exts)}"
+        )
+    
+    log_upload_info(f"📎 File type: {file_ext.upper()}")
+    print(f"📎 File type: {file_ext.upper()}")
 
     fpath = os.path.join(UPLOAD_DIR, f"{uuid.uuid4()}_{file.filename}")
     with open(fpath, "wb") as out:
@@ -55,16 +70,36 @@ async def upload_file(
     log_upload_info(f"💾 Saved to: {fpath}")
     print(f"💾 Saved to: {fpath}")
     
-    # Load and log preview of uploaded data
+    # Parse file using appropriate parser
     try:
-        con = duckdb.connect()
-        preview_df = con.execute(f"SELECT * FROM read_csv_auto('{fpath}') LIMIT 5").fetch_df()
-        log_upload_info(f"\n📊 UPLOADED FILE PREVIEW (first 5 rows):")
+        log_upload_info(f"\n🔄 Parsing {file_ext.upper()} file...")
+        print(f"\n🔄 Parsing {file_ext.upper()} file...")
+        
+        df_parsed, file_type_detected = parse_file(fpath)
+        validate_dataframe(df_parsed, min_rows=1, min_cols=1)
+        
+        log_upload_info(f"✅ Successfully parsed as {file_type_detected}")
+        log_upload_info(f"📊 Data shape: {df_parsed.shape[0]} rows × {df_parsed.shape[1]} columns")
+        print(f"✅ Successfully parsed as {file_type_detected}")
+        print(f"📊 Data shape: {df_parsed.shape[0]} rows × {df_parsed.shape[1]} columns")
+        
+        # Save parsed data as temporary CSV for DuckDB
+        temp_csv_path = fpath.rsplit('.', 1)[0] + '_parsed.csv'
+        df_parsed.to_csv(temp_csv_path, index=False)
+        fpath = temp_csv_path  # Use parsed CSV for downstream processing
+        
+        # Log preview
+        preview_df = df_parsed.head(5)
+        log_upload_info(f"\n📊 PARSED DATA PREVIEW (first 5 rows):")
         log_upload_info("-"*80)
         log_upload_info(preview_df.to_string())
         log_upload_info("-"*80)
+        
     except Exception as e:
-        log_upload_info(f"⚠️ Could not preview file: {e}")
+        error_msg = str(e)
+        log_upload_info(f"❌ Parsing failed: {error_msg}")
+        print(f"❌ Parsing failed: {error_msg}")
+        raise HTTPException(status_code=400, detail=f"Failed to parse file: {error_msg}")
 
     # Generate widget proposals
     log_upload_info("\n🤖 Calling generate_quick_viz...")

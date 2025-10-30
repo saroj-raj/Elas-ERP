@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import CountrySelect from '../../components/CountrySelect';
 
 export default function BusinessPage() {
   const router = useRouter();
@@ -122,13 +123,10 @@ export default function BusinessPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Country <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
-                required
+              <CountrySelect
                 value={formData.country}
-                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="United States"
+                onChange={(value) => setFormData({ ...formData, country: value })}
+                required
               />
             </div>
 
