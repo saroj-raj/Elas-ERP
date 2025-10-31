@@ -37,6 +37,26 @@ backend/app/__pycache__/
 backend/app/services/__pycache__/
 backend/app/models/__pycache__/
 backend/app/**/*.log
+<<<<<<< Updated upstream
+=======
+elas-erp/backend/app/tmp/
+elas-erp/backend/app/tmp/uploads/
+elas-erp/app/tmp/
+elas-erp/app/tmp/uploads/
+elas-erp/GROQ_DEBUG.log
+GROQ_DEBUG.log
+*.log
+>>>>>>> Stashed changes
+
+# Test files created during development
+test_*.csv
+test_*.xlsx
+test_*.txt
+**/test_*.csv
+**/test_*.xlsx
+quick_test_upload.ps1
+test_upload.ps1
+restart_backend.ps1
 
 # Node / Next.js
 frontend/node_modules/
@@ -63,8 +83,64 @@ data/
 *.duckdb
 *.sqlite
 *.sqlite3
+<<<<<<< Updated upstream
+=======
+
+# Dataset files (CSV, Excel, etc.)
+*.csv
+*.xlsx
+*.xls
+*.xlsm
+*.xlsb
+*.tsv
+*.dat
+*.json
+*.parquet
+!**/sample_data/**
+!**/example_data/**
+!**/test_data/**
+
+# Uploaded files
+uploads/
+**/uploads/**
+**/tmp/uploads/**
+test_files/
+**/test_files/**
+
+# Generated reports
+reports/
+**/reports/**
+*.report
+*.summary
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.mp3
+*.wav
+*.flac
+*.pdf
+*.psd
+*.ai
+
+# Large binary/package files
+*.pack
+*.pack.gz
+*.idx
+*.node
+*.dylib
+*.so
+*.dll
+>>>>>>> Stashed changes
 
 # Secrets & keys
 *.key
 *.pem
 secrets.json
+
+# Exclude large binary files (Next.js SWC, etc.)
+*.node
+**/*.node
+**/@next/swc-*/

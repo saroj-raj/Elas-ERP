@@ -12,6 +12,11 @@ SQLAlchemy==2.0.35
 psycopg2-binary==2.9.9
 alembic==1.13.3
 
+# Authentication & Security
+python-jose[cryptography]==3.5.0
+passlib[bcrypt]==1.7.4
+bcrypt==5.0.0
+
 # Caching/queues
 redis==5.0.8
 
