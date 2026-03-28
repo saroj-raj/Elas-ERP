@@ -1,0 +1,15 @@
+[33m20e6aa2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Initial import from Elas ERP (rebrand to Vizpilot)
+[33me26e9eb[m Install @vercel/speed-insights package
+[33m30dfeba[m Add Speed Insights and Team Management system
+[33m911ffdf[m Fix import path in settings page for deployment
+[33m04223db[m Fix all critical issues: React hydration error, Account Settings page, data persistence, and pre-population
+[33m572b5fb[m Fix Switch User navigation + Add debug guide for Groq issue
+[33m24b86fd[m Fix documents page: Use env variable for API URLs (upload + save)
+[33m70b6a7e[m Add implementation summary for E2E testing infrastructure
+[33md05bea1[m Add E2E testing infrastructure: GitHub Actions, Playwright, pytest, pre-push hooks
+[33m8a5fb60[m Add PROJECT_STATUS.md for AI analysis
+[33m8c325b7[m Clean up repository: Remove test scripts, update docs, add PROJECT_STATUS.md and RULES.md
+[33m47867f3[m Fix login redirect to onboarding and use environment variable for API base URL
+[33m1085556[m Temporarily disable middleware to debug login redirect issue
+[33m10b0489[m Fix login redirect by using window.location for full page navigation
+[33md439499[m Add detailed console logging for login debugging
