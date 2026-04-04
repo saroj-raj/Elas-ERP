@@ -1,7 +1,7 @@
 services:
   backend:
     build: ./backend
-    container_name: elas-erp-backend
+    container_name: vizpilot-backend
     env_file:
       - backend/.env
     command: uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
@@ -10,7 +10,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - elas-erp-network
+      - vizpilot-network
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
       interval: 30s
@@ -21,7 +21,7 @@ services:
   frontend:
     working_dir: /app
     image: node:20
-    container_name: elas-erp-frontend
+    container_name: vizpilot-frontend
     environment:
       - NEXT_PUBLIC_API_BASE=http://localhost:8000
     command: bash -lc "npm install && npm run dev"
@@ -33,8 +33,8 @@ services:
     depends_on:
       - backend
     networks:
-      - elas-erp-network
+      - vizpilot-network
 
 networks:
-  elas-erp-network:
+  vizpilot-network:
     driver: bridge

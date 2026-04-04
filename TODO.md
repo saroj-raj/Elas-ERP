@@ -139,7 +139,7 @@ npx playwright install --with-deps
 #### D1: GitHub Actions Validation
 - [ ] Test backend-tests.yml workflow locally
 - [ ] Test frontend-e2e.yml workflow locally
-- [ ] Fix any path issues (note: workflows run from root, need `elas-erp/` prefix)
+- [ ] Fix any path issues (note: workflows run from root)
 - [ ] Verify pytest discovers and runs tests
 - [ ] Verify Playwright discovers and runs E2E test
 
@@ -192,7 +192,7 @@ npx playwright install --with-deps
 
 ### H. Real Supabase Storage Integration
 - [ ] Implement Supabase Storage upload in production mode
-- [ ] Create `elas-uploads` bucket
+- [ ] Create `vizpilot-uploads` bucket
 - [ ] Update upload service to use Supabase Storage when `APP_ENV=production`
 
 ---

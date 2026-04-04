@@ -1,3 +1,3 @@
-export default function ElasChat() {
-  return <div>ElasChat</div>;
+export default function VizpilotChat() {
+  return <div>VizpilotChat</div>;
 }

@@ -1,4 +1,4 @@
--- Elas-ERP Database Schema
+-- Vizpilot Database Schema
 -- Run this script on your Neon or Supabase PostgreSQL database
 
 -- Enable UUID extension

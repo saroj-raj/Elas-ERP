@@ -97,8 +97,8 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/saroj-raj/Elas-ERP.git
-   cd Elas-ERP/elas-erp
+   git clone https://github.com/your-org/VizPilot.git
+   cd VizPilot
    ```
 
 2. **Backend Setup**
@@ -129,7 +129,7 @@
 ## 📁 Project Structure
 
 ```
-elas-erp/
+VizPilot/
 ├── frontend/                 # Next.js application
 │   ├── app/
 │   │   ├── components/      # Reusable React components
@@ -203,7 +203,7 @@ elas-erp/
 
 **Frontend (.env.production):**
 ```bash
-NEXT_PUBLIC_API_BASE=https://elas-erp.onrender.com
+NEXT_PUBLIC_API_BASE=https://vizpilot-api.onrender.com
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 ```
@@ -215,8 +215,8 @@ SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 DATABASE_URL=your_postgresql_url
 GROQ_API_KEY=your_groq_api_key
-CORS_ORIGINS=https://elas-erp.vercel.app
-FRONTEND_URL=https://elas-erp.vercel.app
+CORS_ORIGINS=https://vizpilot.vercel.app
+FRONTEND_URL=https://vizpilot.vercel.app
 ```
 
 See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for detailed instructions.
@@ -330,7 +330,7 @@ For issues, questions, or contributions:
 
 ## Overview
 
-Elas-ERP is a full-stack ERP application featuring:
+Vizpilot is a full-stack AI data intelligence platform featuring:
 - **Backend**: FastAPI (Python) REST API
 - **Frontend**: Next.js 14 with TypeScript, React 18, and Tailwind CSS
 - **Database**: PostgreSQL
@@ -473,7 +473,7 @@ npm -v    # Should show v10.9.3 or similar
 1. **Stop conflicting service**:
    ```powershell
    # Stop Docker frontend container
-   docker stop elas-erp-frontend
+   docker stop vizpilot-frontend
    
    # Or stop all Docker services
    docker compose down
@@ -499,11 +499,11 @@ npm -v    # Should show v10.9.3 or similar
 
 **Error**: `ModuleNotFoundError: No module named 'backend'`
 
-**Solution**: The virtual environment is located at `../Elas-ERP/.venv` (parent directory):
+**Solution**: The virtual environment is located at `../VizPilot/.venv` (parent directory):
 
 ```powershell
 # Activate venv
-& "..\Elas-ERP\.venv\Scripts\Activate.ps1"
+& "..\VizPilot\.venv\Scripts\Activate.ps1"
 
 # Install backend dependencies
 cd backend
@@ -561,7 +561,7 @@ npm test
 ## Project Structure
 
 ```
-elas-erp/
+VizPilot/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py           # FastAPI app entry point
@@ -609,7 +609,7 @@ Create `.env` files for configuration:
 
 **backend/.env**:
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/elas_erp
+DATABASE_URL=postgresql://user:password@localhost:5432/vizpilot
 SECRET_KEY=your-secret-key
 DEBUG=True
 ```
