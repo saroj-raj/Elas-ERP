@@ -51,7 +51,7 @@ This document tracks the implementation of automated end-to-end testing and the 
 
 #### A3: Auth Layer (Mock)
 - [ ] Create mock auth service that bypasses Supabase
-- [ ] Seed test user: `test@elas.local` / `password`
+- [ ] Seed test user: `test@vizpilot.local` / `password`
 - [ ] Return mock JWT tokens when `AUTH_MODE=mock`
 - [ ] Update auth middleware to accept mock tokens
 
