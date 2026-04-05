@@ -25,9 +25,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Master rules (local only)
-RULES.md
-
 # IDE
 .vscode/
 .idea/
