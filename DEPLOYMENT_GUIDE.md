@@ -16,7 +16,7 @@
 
 1. **Go to [render.com](https://render.com) Dashboard**
    - Sign in to your account
-   - Find your existing `elas-api` service
+   - Find your existing `vizpilot-api` service
 
 2. **Configure Environment Variables**
    
@@ -48,15 +48,15 @@
    
    ```bash
    # Health check
-   curl https://elas-api.onrender.com/health
+   curl https://vizpilot-api.onrender.com/health
    # Should return: {"status":"healthy"}
 
    # Version check
-   curl https://elas-api.onrender.com
+   curl https://vizpilot-api.onrender.com
    # Should return: {"message":"VizPilot API","version":"1.0.0"}
 
    # Auth endpoint check
-   curl https://elas-api.onrender.com/api/auth/me
+   curl https://vizpilot-api.onrender.com/api/auth/me
    # Should return: 401 Unauthorized (expected - not logged in)
    ```
 
@@ -90,12 +90,12 @@
 
 2. **Import Your Repository**
    - Click **"Add New..."** → **Project**
-   - Select `saroj-raj/Elas-ERP`
+   - Select `saroj-raj/VizPilot`
    - Click **Import**
 
 3. **Configure Project**
    - **Framework Preset:** Next.js
-   - **Root Directory:** `elas-erp/frontend`
+   - **Root Directory:** `frontend`
    - **Build Command:** `npm run build` (auto-detected)
    - **Output Directory:** `.next` (auto-detected)
    - **Install Command:** `npm install` (auto-detected)
@@ -108,7 +108,7 @@
 5. **Deploy**
    - Click **"Deploy"**
    - Wait 2-3 minutes
-   - Copy your deployment URL (e.g., `https://elas-erp.vercel.app`)
+   - Copy your deployment URL (e.g., `https://vizpilot.vercel.app`)
 
 **Option 2: Via Vercel CLI**
 
@@ -117,7 +117,7 @@
 npm install -g vercel
 
 # Navigate to frontend
-cd elas-erp/frontend
+cd frontend
 
 # Login to Vercel
 vercel login
@@ -131,11 +131,11 @@ vercel --prod
 6. **Verify Frontend is Live**
    
    Visit your Vercel URL:
-   - Homepage: `https://elas-erp.vercel.app`
-   - Login: `https://elas-erp.vercel.app/login`
-   - Signup: `https://elas-erp.vercel.app/signup`
+   - Homepage: `https://vizpilot.vercel.app`
+   - Login: `https://vizpilot.vercel.app/login`
+   - Signup: `https://vizpilot.vercel.app/signup`
 
-   ✅ **Frontend URL:** `https://elas-erp.vercel.app`
+   ✅ **Frontend URL:** `https://vizpilot.vercel.app`
 
 ---
 
@@ -144,15 +144,15 @@ vercel --prod
 **CRITICAL:** Update backend CORS to allow your Vercel frontend:
 
 1. **On Render Dashboard**
-   - Go to your `elas-api` service
+   - Go to your `vizpilot-api` service
    - Go to **Environment** tab
    - Update `CORS_ORIGINS` to:
      ```
-     https://elas-erp.vercel.app,http://localhost:4000
+     https://vizpilot.vercel.app,http://localhost:4000
      ```
    - Update `FRONTEND_URL` to:
      ```
-     https://elas-erp.vercel.app
+     https://vizpilot.vercel.app
      ```
    - Click **"Save Changes"**
    - Service will auto-redeploy
@@ -162,13 +162,13 @@ vercel --prod
 ### 4. Configure Supabase Authentication
 
 1. **Go to [Supabase Dashboard](https://supabase.com/dashboard)**
-   - Select your `elas-erp-storage` project
+   - Select your Supabase project
 
 2. **Add Authorized URLs**
    - Go to **Authentication** → **URL Configuration**
-   - Add to **Site URL:** `https://elas-erp.vercel.app`
+   - Add to **Site URL:** `https://vizpilot.vercel.app`
    - Add to **Redirect URLs:**
-     - `https://elas-erp.vercel.app/**`
+     - `https://vizpilot.vercel.app/**`
      - `http://localhost:4000/**` (for local dev)
    - Click **Save**
 
@@ -182,7 +182,7 @@ vercel --prod
 ## 🧪 Testing Deployment
 
 ### 1. Test Signup Flow
-1. Go to `https://elas-erp.vercel.app/signup`
+1. Go to `https://vizpilot.vercel.app/signup`
 2. Fill in:
    - Full Name: Test User
    - Business Name: Test Company
@@ -192,13 +192,13 @@ vercel --prod
 4. Should redirect to `/dashboard/admin`
 
 ### 2. Test Login Flow
-1. Go to `https://elas-erp.vercel.app/login`
+1. Go to `https://vizpilot.vercel.app/login`
 2. Login with credentials from step 1
 3. Should redirect to dashboard
 
 ### 3. Test Route Protection
 1. While logged out, try visiting:
-   - `https://elas-erp.vercel.app/dashboard/admin`
+   - `https://vizpilot.vercel.app/dashboard/admin`
 2. Should redirect to `/login`
 
 ### 4. Test Logout
@@ -246,7 +246,7 @@ vercel --prod
 - **Cause:** Backend URL incorrect
 - **Fix:**
   1. Check `NEXT_PUBLIC_API_BASE` on Vercel
-  2. Should be `https://elas-api.onrender.com` (no trailing slash)
+  2. Should be `https://vizpilot-api.onrender.com` (no trailing slash)
   3. Redeploy
 
 **Problem: Signup succeeds but can't login**
@@ -327,8 +327,8 @@ vercel --prod
 ## 🔗 Quick Links
 
 ### Your Deployed Apps
-- **Frontend:** https://elas-erp.vercel.app (Update after Vercel deployment)
-- **Backend:** https://elas-api.onrender.com (Update with your Render URL)
+- **Frontend:** https://vizpilot.vercel.app (Update after Vercel deployment)
+- **Backend:** https://vizpilot-api.onrender.com (Update with your Render URL)
 - **Supabase:** https://supabase.com/dashboard/project/nkohcnqkjjsjludqmkjz
 
 ### Dashboards
@@ -360,11 +360,11 @@ If you encounter issues:
 3. **Test locally first:**
    ```bash
    # Backend
-   cd elas-erp/backend
+   cd backend
    uvicorn app.main:app --reload
 
    # Frontend
-   cd elas-erp/frontend
+   cd frontend
    npm run dev
    ```
 
