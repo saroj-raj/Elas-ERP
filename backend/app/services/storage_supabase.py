@@ -13,7 +13,7 @@ class SupabaseStorage:
     def __init__(self):
         self.url = os.getenv("SUPABASE_URL", "")
         self.key = os.getenv("SUPABASE_SERVICE_ROLE_KEY", "")
-        self.bucket = os.getenv("SUPABASE_BUCKET", "elas-uploads")
+        self.bucket = os.getenv("SUPABASE_BUCKET", "vizpilot-uploads")
         
         if not self.url or not self.key:
             raise ValueError("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set")
