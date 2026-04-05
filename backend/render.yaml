@@ -1,11 +1,11 @@
 services:
   - type: web
-    name: elas-api
+    name: vizpilot-api
     env: python
     region: oregon
     plan: free
     branch: main
-    rootDir: elas-erp/backend
+    rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
