@@ -6,6 +6,7 @@ import Card from '../../components/Card';
 import Button from '../../components/Button';
 import FileDropzone from '../../components/FileDropzone';
 import VegaLiteWrapper from '@/components/VegaLiteWrapper';
+import { API_BASE } from '@/app/lib/api';
 
 type SimpleFile = { name: string; sizeKB: number; file?: File };
 type Widget = { title: string; explanation?: string; vega_spec: any; role?: string };
@@ -19,7 +20,7 @@ export default function DocumentUpload() {
   const [preview, setPreview] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
 
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+  const apiBase = API_BASE;
 
   useEffect(() => {
     try {

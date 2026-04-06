@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { API_BASE } from '@/app/lib/api';
 
 interface WidgetSpec {
   id: string;
@@ -98,7 +99,7 @@ export default function DocumentsPage() {
       formData.append('domain', domain);
       formData.append('intent', intent);
 
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+      const apiBase = API_BASE;
       const response = await fetch(`${apiBase}/api/upload`, {
         method: 'POST',
         body: formData,
@@ -147,7 +148,7 @@ export default function DocumentsPage() {
       };
 
       console.log('💾 Saving dashboard:', dashboardData);
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+      const apiBase = API_BASE;
       const response = await fetch(`${apiBase}/api/dashboard/save`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

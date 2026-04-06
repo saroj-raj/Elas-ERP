@@ -6,6 +6,7 @@ import Card from '../../components/Card';
 import Button from '../../components/Button';
 import FileDropzone from '../../components/FileDropzone';
 import dynamic from 'next/dynamic';
+import { API_BASE } from '@/app/lib/api';
 
 const VegaLite = dynamic(() => import('react-vega').then(m => m.VegaLite), { ssr: false });
 
@@ -21,7 +22,7 @@ export default function DocumentUpload() {
   const [preview, setPreview] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
 
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+  const apiBase = API_BASE;
 
   useEffect(() => {
     try {

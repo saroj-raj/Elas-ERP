@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE } from '@/app/lib/api';
 
 interface TeamMember {
   id: string;
@@ -59,7 +60,7 @@ export default function TeamPage() {
       localStorage.setItem('teamMembers', JSON.stringify(updatedTeam));
 
       // TODO: Save to backend
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+      const apiBase = API_BASE;
       const businessInfo = localStorage.getItem('businessInfo');
       const businessId = businessInfo ? JSON.parse(businessInfo).businessName?.toLowerCase().replace(/\s/g, '_') : 'default';
       
@@ -90,7 +91,7 @@ export default function TeamPage() {
       localStorage.setItem('teamMembers', JSON.stringify(updatedTeam));
 
       // TODO: Remove from backend
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+      const apiBase = API_BASE;
       const businessInfo = localStorage.getItem('businessInfo');
       const businessId = businessInfo ? JSON.parse(businessInfo).businessName?.toLowerCase().replace(/\s/g, '_') : 'default';
       

@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { API_BASE } from '@/app/lib/api';
 
 export default function UploadPage() {
   const router = useRouter();
@@ -88,7 +89,7 @@ export default function UploadPage() {
       formData.append('intent', intent);
 
       console.log('📤 Uploading files to API...');
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+      const apiBase = API_BASE;
 
       // If apiBase defaults to localhost but we are not running on localhost,
       // warn the user instead of attempting a failing network call.
@@ -131,7 +132,7 @@ export default function UploadPage() {
       
       if (err instanceof Error) {
         const errMsg = err.message.toLowerCase();
-        const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+        const apiBase = API_BASE;
         
         if (errMsg.includes('config:') || (errMsg.includes('networkerror') || errMsg.includes('failed to fetch'))) {
           errorMessage += `Cannot reach the server at ${apiBase}. If you're deployed, set NEXT_PUBLIC_API_BASE to your backend URL; if developing locally, ensure the backend is running at ${apiBase}.`;

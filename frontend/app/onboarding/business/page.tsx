@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CountrySelect from '../../components/CountrySelect';
+import { API_BASE } from '@/app/lib/api';
 
 export default function BusinessPage() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function BusinessPage() {
         }
 
         // Then try to fetch from backend
-        const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+        const apiBase = API_BASE;
         const response = await fetch(`${apiBase}/api/business/me/info`);
         if (response.ok) {
           const data = await response.json();
@@ -65,7 +66,7 @@ export default function BusinessPage() {
       localStorage.setItem('businessName', formData.businessName);
       
       // Save to backend
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+      const apiBase = API_BASE;
       const response = await fetch(`${apiBase}/api/business/setup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

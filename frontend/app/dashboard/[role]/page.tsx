@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { API_BASE } from '@/app/lib/api';
 import UserSwitcher from '@/app/components/UserSwitcher';
 import DashboardCommandBox, { DashboardCommand } from '@/app/components/DashboardCommandBox';
 import { ROLE_CONFIGS, filterWidgetsByRole, filterDataByRole, type Role } from '@/app/lib/roleConfig';
@@ -155,7 +156,7 @@ export default function RoleDashboard() {
   const handleCommandApply = async (command: DashboardCommand) => {
     setRefining(true);
     try {
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+      const apiBase = API_BASE;
       const response = await fetch(`${apiBase}/api/dashboard/refine`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -1,6 +1,10 @@
 // Groq AI Service - now using backend API for all operations
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE
+  ? `${process.env.NEXT_PUBLIC_API_BASE}/api`
+  : typeof window !== 'undefined' && window.location.hostname === 'localhost'
+  ? 'http://localhost:8000/api'
+  : 'https://vizpilot.onrender.com/api';
 
 export interface GroqMessage {
   role: 'system' | 'user' | 'assistant';

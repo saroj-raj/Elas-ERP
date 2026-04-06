@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { API_BASE } from '@/app/lib/api';
 
 export default function UploadPage() {
   const router = useRouter();
@@ -85,7 +86,7 @@ export default function UploadPage() {
       formData.append('intent', intent);
 
       console.log('📤 Uploading files to API...');
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+      const apiBase = API_BASE;
 
       if (apiBase.includes('localhost') && typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
         throw new Error(`CONFIG: NEXT_PUBLIC_API_BASE is not set and default ${apiBase} is unreachable from this environment. Set NEXT_PUBLIC_API_BASE to your backend URL.`);
@@ -126,7 +127,7 @@ export default function UploadPage() {
       
       if (err instanceof Error) {
         const errMsg = err.message.toLowerCase();
-        const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+        const apiBase = API_BASE;
         
         if (errMsg.includes('config:') || (errMsg.includes('networkerror') || errMsg.includes('failed to fetch'))) {
           errorMessage += `Cannot reach the server at ${apiBase}. If you're deployed, set NEXT_PUBLIC_API_BASE to your backend URL; if developing locally, ensure the backend is running at ${apiBase}.`;

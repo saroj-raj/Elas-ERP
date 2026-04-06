@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { API_BASE } from '@/app/lib/api';
 
 interface BusinessInfo {
   businessName: string;
@@ -69,7 +70,7 @@ export default function SettingsPage() {
       localStorage.setItem('businessName', businessInfo.businessName);
 
       // TODO: Save to backend API
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+      const apiBase = API_BASE;
       const response = await fetch(`${apiBase}/api/business/setup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
