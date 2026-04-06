@@ -1,6 +1,6 @@
 # MASTER RULES
 
-## 0) Non-negotiables
+## 1) Purpose
 - Stack is locked to free tiers: **Vercel (FE)**, **Render (BE)**, **Neon or Supabase Postgres (DB)**, **Supabase Storage (files)**, **Groq LLM** (`llama-3.3-70b-versatile`).
 - No paid services, no surprise infra (no Railway/AWS unless explicitly approved).
 - Never commit secrets. All secrets via provider env managers.

@@ -35,7 +35,8 @@ class AuthService:
                 "options": {
                     "data": {
                         "full_name": full_name
-                    }
+                    },
+                    "email_confirm": False  # Disable email confirmation for admin-created users
                 }
             })
 
@@ -133,7 +134,7 @@ class AuthService:
     async def login(email: str, password: str) -> Dict[str, Any]:
         """Login user and return session"""
         try:
-            supabase = get_supabase()
+            supabase = get_supabase_admin()  # Use admin client for consistency with signup
             
             # Authenticate with Supabase
             auth_response = supabase.auth.sign_in_with_password({

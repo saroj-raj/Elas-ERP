@@ -56,7 +56,7 @@ export default function SignupPage() {
       if (result.error) {
         setError(result.error.message || 'Signup failed. Please try again.');
       } else {
-        setSuccess('Account created. Please check your email and verify your address before logging in.');
+        setSuccess('Account created successfully! You can now log in.');
         setFormData({ fullName: '', email: '', password: '', confirmPassword: '', businessName: '' });
       }
     } catch (err: any) {

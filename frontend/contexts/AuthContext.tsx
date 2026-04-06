@@ -87,30 +87,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      console.log('AuthContext: Attempting to sign in with Supabase...');
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      console.log('AuthContext: Supabase response:', {
-        hasData: !!data,
-        hasUser: !!data?.user,
-        hasSession: !!data?.session,
-        error: error?.message,
+      console.log('AuthContext: Attempting to sign in via backend...');
+      const response = await fetch(`${API_BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (error) {
-        const message = error.message || 'Login failed';
-        const normalized = message.toLowerCase();
-        if (normalized.includes('confirm') || normalized.includes('verified') || normalized.includes('unconfirmed')) {
+      const data = await response.json();
+
+      if (!response.ok) {
+        const errorMessage = data.detail || 'Login failed';
+        const normalized = errorMessage.toLowerCase();
+
+        if (normalized.includes('confirm') || normalized.includes('verified') || normalized.includes('unconfirmed') || normalized.includes('email not confirmed')) {
           return { error: new Error('Your email is not confirmed yet. Please verify the email sent to you before logging in.') };
         }
 
-        console.error('AuthContext: Sign in error:', error);
-        return { error };
+        console.error('AuthContext: Login error:', errorMessage);
+        return { error: new Error(errorMessage) };
       }
 
-      console.log('AuthContext: Sign in successful, user:', data.user?.email);
+      // Set the session in Supabase client using the returned tokens
+      const { access_token, refresh_token } = data.session;
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token,
+        refresh_token,
+      });
+
+      if (sessionError) {
+        console.error('AuthContext: Failed to set session:', sessionError);
+        return { error: new Error('Login successful but session setup failed') };
+      }
+
+      console.log('AuthContext: Login successful, user:', data.user.email);
       return { error: null };
     } catch (err: any) {
-      console.error('AuthContext: Sign in exception:', err);
+      console.error('AuthContext: Login exception:', err);
       return { error: new Error(err.message || 'An unexpected error occurred') };
     }
   }
