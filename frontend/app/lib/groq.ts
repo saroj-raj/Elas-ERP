@@ -1,10 +1,8 @@
 // Groq AI Service - now using backend API for all operations
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE
-  ? `${process.env.NEXT_PUBLIC_API_BASE}/api`
-  : typeof window !== 'undefined' && window.location.hostname === 'localhost'
-  ? 'http://localhost:8000/api'
-  : 'https://vizpilot.onrender.com/api';
+import { API_BASE } from '@/app/lib/api';
+
+const API_BASE_PATH = `${API_BASE}/api`;
 
 export interface GroqMessage {
   role: 'system' | 'user' | 'assistant';
@@ -30,7 +28,7 @@ export async function getBusinessInsights(
   }
 ): Promise<string> {
   try {
-    const response = await fetch(`${API_BASE}/ai/recommendations`, {
+    const response = await fetch(`${API_BASE_PATH}/ai/recommendations`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -81,7 +79,7 @@ export async function generateHistoricalData(
     // Try to get predictions from backend
     const historicalData: ChartData[] = generateFallbackChartData();
     
-    const response = await fetch(`${API_BASE}/ai/predictions`, {
+    const response = await fetch(`${API_BASE_PATH}/ai/predictions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -132,7 +130,7 @@ export async function getChatResponse(
   conversationHistory: GroqMessage[] = []
 ): Promise<string> {
   try {
-    const response = await fetch(`${API_BASE}/ai/chat?message=${encodeURIComponent(userMessage)}`, {
+    const response = await fetch(`${API_BASE_PATH}/ai/chat?message=${encodeURIComponent(userMessage)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ context: conversationHistory })
@@ -154,7 +152,7 @@ export async function uploadDocument(file: File): Promise<any> {
     const formData = new FormData();
     formData.append('files', file);
     
-    const response = await fetch(`${API_BASE}/documents/upload`, {
+    const response = await fetch(`${API_BASE_PATH}/documents/upload`, {
       method: 'POST',
       body: formData
     });
@@ -171,7 +169,7 @@ export async function uploadDocument(file: File): Promise<any> {
  */
 export async function saveBusinessSetup(setupData: any): Promise<any> {
   try {
-    const response = await fetch(`${API_BASE}/business/setup`, {
+    const response = await fetch(`${API_BASE_PATH}/business/setup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(setupData)
@@ -196,7 +194,7 @@ export async function analyzeDocument(
   insights: string[];
 }> {
   try {
-    const response = await fetch(`${API_BASE}/ai/analyze-document`, {
+    const response = await fetch(`${API_BASE_PATH}/ai/analyze-document`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

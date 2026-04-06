@@ -18,6 +18,7 @@ export default function SignupPage() {
     businessName: ''
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,13 +46,19 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-      await signUp(
+      const result = await signUp(
         formData.email,
         formData.password,
         formData.fullName,
         formData.businessName
       );
-      router.push('/dashboard/admin');
+
+      if (result.error) {
+        setError(result.error.message || 'Signup failed. Please try again.');
+      } else {
+        setSuccess('Account created. Please check your email and verify your address before logging in.');
+        setFormData({ fullName: '', email: '', password: '', confirmPassword: '', businessName: '' });
+      }
     } catch (err: any) {
       setError(err.message || 'Signup failed. Please try again.');
     } finally {
@@ -160,6 +167,13 @@ export default function SignupPage() {
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
                 {error}
+              </div>
+            )}
+
+            {/* Success Message */}
+            {success && (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+                {success}
               </div>
             )}
 

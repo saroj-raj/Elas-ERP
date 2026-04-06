@@ -75,14 +75,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = await response.json()
 
       if (!response.ok) {
-        return { error: data.detail || 'Signup failed' }
+        return { error: new Error(data.detail || 'Signup failed') }
       }
 
-      // Sign in after successful signup
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
-      return { error }
+      // Do not auto sign in; require email verification if configured.
+      return { error: null }
     } catch (error: any) {
-      return { error: error.message }
+      return { error: new Error(error.message || 'Signup failed') }
     }
   }
 
@@ -90,23 +89,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('AuthContext: Attempting to sign in with Supabase...');
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      console.log('AuthContext: Supabase response:', { 
-        hasData: !!data, 
+      console.log('AuthContext: Supabase response:', {
+        hasData: !!data,
         hasUser: !!data?.user,
         hasSession: !!data?.session,
-        error: error?.message 
+        error: error?.message,
       });
-      
+
       if (error) {
+        const message = error.message || 'Login failed';
+        const normalized = message.toLowerCase();
+        if (normalized.includes('confirm') || normalized.includes('verified') || normalized.includes('unconfirmed')) {
+          return { error: new Error('Your email is not confirmed yet. Please verify the email sent to you before logging in.') };
+        }
+
         console.error('AuthContext: Sign in error:', error);
-      } else {
-        console.log('AuthContext: Sign in successful, user:', data.user?.email);
+        return { error };
       }
-      
-      return { error };
+
+      console.log('AuthContext: Sign in successful, user:', data.user?.email);
+      return { error: null };
     } catch (err: any) {
       console.error('AuthContext: Sign in exception:', err);
-      return { error: { message: err.message || 'An unexpected error occurred' } };
+      return { error: new Error(err.message || 'An unexpected error occurred') };
     }
   }
 

@@ -29,7 +29,12 @@ export default function LoginPage() {
       
       if (error) {
         console.error('Login error details:', error);
-        setError(error.message || 'Login failed. Please check your credentials.');
+        const normalized = (error.message || '').toLowerCase();
+        if (normalized.includes('confirm') || normalized.includes('verified') || normalized.includes('unconfirmed')) {
+          setError('Your email is not confirmed yet. Please verify your email before logging in.');
+        } else {
+          setError(error.message || 'Login failed. Please check your credentials.');
+        }
         setLoading(false);
         return;
       }
