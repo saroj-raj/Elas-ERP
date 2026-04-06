@@ -7,6 +7,11 @@ class Settings(BaseSettings):
     app_env: str = Field(default="dev", alias="APP_ENV")
     app_host: str = Field(default="0.0.0.0", alias="APP_HOST")
     app_port: int = Field(default=8000, alias="APP_PORT")
+    cors_origins: str = Field(
+        default="http://localhost:3000,http://localhost:4000,https://vizpilot.vercel.app",
+        alias="CORS_ORIGINS",
+    )
+    frontend_url: str = Field(default="https://vizpilot.vercel.app", alias="FRONTEND_URL")
 
     # Supabase
     supabase_url: str = Field(default="", alias="SUPABASE_URL")
@@ -35,6 +40,13 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         extra = "ignore"
+
+    @property
+    def cors_origin_list(self) -> list[str]:
+        origins = [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+        if self.frontend_url and self.frontend_url not in origins:
+            origins.append(self.frontend_url)
+        return origins
 
 
 settings = Settings()
