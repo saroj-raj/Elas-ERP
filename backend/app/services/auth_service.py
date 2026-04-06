@@ -38,7 +38,34 @@ class AuthService:
                     }
                 }
             })
-            
+
+            if getattr(auth_response, "error", None):
+                error_message = str(auth_response.error.message or auth_response.error)
+                normalized = error_message.lower()
+
+                if "rate limit" in normalized or "too many requests" in normalized:
+                    raise HTTPException(
+                        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                        detail=(
+                            "Email rate limit exceeded. "
+                            "Please wait a few minutes and check your inbox for the verification email before trying again."
+                        )
+                    )
+
+                if "already registered" in normalized or "already exists" in normalized:
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=(
+                            "This email is already registered. "
+                            "If you already have an account, please log in or reset your password."
+                        )
+                    )
+
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Signup failed: {error_message}"
+                )
+
             if not auth_response.user:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
