@@ -119,7 +119,7 @@ async def signup(request: SignupRequest):
             "access_token": result["session"].access_token,
             "refresh_token": result["session"].refresh_token,
             "expires_at": result["session"].expires_at
-        },
+        } if result.get("session") else None,
         "business": {
             "id": result["business_id"],
             "name": result["business_name"]

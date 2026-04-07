@@ -81,6 +81,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Do not auto sign in; require email verification if configured.
       return { error: null }
     } catch (error: any) {
+      if (error instanceof TypeError) {
+        return { error: new Error('Unable to reach the authentication service. Please try again in a moment.') }
+      }
       return { error: new Error(error.message || 'Signup failed') }
     }
   }
@@ -124,6 +127,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error: null };
     } catch (err: any) {
       console.error('AuthContext: Login exception:', err);
+      if (err instanceof TypeError) {
+        return { error: new Error('Unable to reach the authentication service. Please try again in a moment.') };
+      }
       return { error: new Error(err.message || 'An unexpected error occurred') };
     }
   }

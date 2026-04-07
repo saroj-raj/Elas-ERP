@@ -16,7 +16,8 @@ def check_env():
         "SUPABASE_BUCKET": "vizpilot-uploads",
         "GROQ_API_KEY": "gsk_...",
         "SECRET_KEY": "random-32-char-string",
-        "ALLOWED_ORIGINS": "https://your-app.vercel.app,http://localhost:4000",
+        "CORS_ORIGINS": "https://your-app.vercel.app,http://localhost:4000",
+        "FRONTEND_URL": "https://your-app.vercel.app",
         "APP_ENV": "production"
     }
     

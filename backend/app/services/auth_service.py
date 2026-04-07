@@ -11,6 +11,73 @@ from app.db.supabase_client import get_supabase, get_supabase_admin
 
 class AuthService:
     """Service for handling authentication operations"""
+
+    @staticmethod
+    def _raise_signup_error(error_message: str) -> None:
+        normalized = error_message.lower()
+
+        if "rate limit" in normalized or "too many requests" in normalized:
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail=(
+                    "Email rate limit exceeded. "
+                    "Please wait a few minutes and try again."
+                )
+            )
+
+        if (
+            "already registered" in normalized
+            or "already been registered" in normalized
+            or "already exists" in normalized
+        ):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=(
+                    "This email is already registered. "
+                    "If you already have an account, please log in or reset your password."
+                )
+            )
+
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Signup failed: {error_message}"
+        )
+
+    @staticmethod
+    def _build_profile(user_data: Dict[str, Any]) -> Dict[str, Any]:
+        business = user_data.get("businesses") or {}
+        return {
+            "id": user_data["id"],
+            "email": user_data["email"],
+            "full_name": user_data["full_name"],
+            "role": user_data["role"],
+            "business_id": user_data["business_id"],
+            "business_name": business.get("name"),
+            "avatar_url": user_data.get("avatar_url"),
+            "is_active": user_data.get("is_active"),
+        }
+
+    @staticmethod
+    def _get_user_profile(user_id: str) -> Dict[str, Any]:
+        admin_client = get_supabase_admin()
+        user_response = admin_client.table("users").select(
+            "*, businesses(*)"
+        ).eq("id", user_id).single().execute()
+
+        if not user_response.data:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User profile not found"
+            )
+
+        return user_response.data
+
+    @staticmethod
+    def _update_last_login(user_id: str) -> None:
+        admin_client = get_supabase_admin()
+        admin_client.table("users").update({
+            "last_login": datetime.utcnow().isoformat()
+        }).eq("id", user_id).execute()
     
     @staticmethod
     async def signup_business_owner(
@@ -26,46 +93,22 @@ class AuthService:
         Creates both the business and the admin user
         """
         try:
-            supabase = get_supabase_admin()
+            auth_admin = get_supabase_admin()
+            db_admin = get_supabase_admin()
             
             # Step 1: Create auth user in Supabase Auth
-            auth_response = supabase.auth.sign_up({
+            auth_response = auth_admin.auth.admin.create_user({
                 "email": email,
                 "password": password,
-                "options": {
-                    "data": {
-                        "full_name": full_name
-                    },
-                    "email_confirm": False  # Disable email confirmation for admin-created users
-                }
+                "user_metadata": {
+                    "full_name": full_name
+                },
+                "email_confirm": True,
             })
 
             if getattr(auth_response, "error", None):
                 error_message = str(auth_response.error.message or auth_response.error)
-                normalized = error_message.lower()
-
-                if "rate limit" in normalized or "too many requests" in normalized:
-                    raise HTTPException(
-                        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-                        detail=(
-                            "Email rate limit exceeded. "
-                            "Please wait a few minutes and check your inbox for the verification email before trying again."
-                        )
-                    )
-
-                if "already registered" in normalized or "already exists" in normalized:
-                    raise HTTPException(
-                        status_code=status.HTTP_400_BAD_REQUEST,
-                        detail=(
-                            "This email is already registered. "
-                            "If you already have an account, please log in or reset your password."
-                        )
-                    )
-
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Signup failed: {error_message}"
-                )
+                AuthService._raise_signup_error(error_message)
 
             if not auth_response.user:
                 raise HTTPException(
@@ -82,11 +125,11 @@ class AuthService:
                 "size": size,
                 "is_active": True
             }
-            business_response = supabase.table("businesses").insert(business_data).execute()
+            business_response = db_admin.table("businesses").insert(business_data).execute()
             
             if not business_response.data:
                 # Rollback: delete auth user if business creation fails
-                supabase.auth.admin.delete_user(user_id)
+                auth_admin.auth.admin.delete_user(user_id)
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Failed to create business"
@@ -104,12 +147,12 @@ class AuthService:
                 "is_active": True,
                 "last_login": datetime.utcnow().isoformat()
             }
-            user_response = supabase.table("users").insert(user_data).execute()
+            user_response = db_admin.table("users").insert(user_data).execute()
             
             if not user_response.data:
                 # Rollback: delete business and auth user
-                supabase.table("businesses").delete().eq("id", business_id).execute()
-                supabase.auth.admin.delete_user(user_id)
+                db_admin.table("businesses").delete().eq("id", business_id).execute()
+                auth_admin.auth.admin.delete_user(user_id)
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Failed to create user profile"
@@ -117,7 +160,7 @@ class AuthService:
             
             return {
                 "user": auth_response.user,
-                "session": auth_response.session,
+                "session": getattr(auth_response, "session", None),
                 "business_id": business_id,
                 "business_name": business_name
             }
@@ -125,61 +168,34 @@ class AuthService:
         except HTTPException:
             raise
         except Exception as e:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Signup failed: {str(e)}"
-            )
+            AuthService._raise_signup_error(str(e))
     
     @staticmethod
     async def login(email: str, password: str) -> Dict[str, Any]:
         """Login user and return session"""
         try:
-            supabase = get_supabase_admin()  # Use admin client for consistency with signup
+            auth_client = get_supabase()
             
             # Authenticate with Supabase
-            auth_response = supabase.auth.sign_in_with_password({
+            auth_response = auth_client.auth.sign_in_with_password({
                 "email": email,
                 "password": password
             })
             
-            if not auth_response.user:
+            if not auth_response.user or not auth_response.session:
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Invalid email or password"
                 )
             
             user_id = auth_response.user.id
-            
-            # Get user profile with business info
-            user_response = supabase.table("users").select(
-                "*, businesses(*)"
-            ).eq("id", user_id).single().execute()
-            
-            if not user_response.data:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="User profile not found"
-                )
-            
-            # Update last login
-            supabase.table("users").update({
-                "last_login": datetime.utcnow().isoformat()
-            }).eq("id", user_id).execute()
-            
-            user_data = user_response.data
+            user_data = AuthService._get_user_profile(user_id)
+            AuthService._update_last_login(user_id)
             
             return {
                 "user": auth_response.user,
                 "session": auth_response.session,
-                "profile": {
-                    "id": user_data["id"],
-                    "email": user_data["email"],
-                    "full_name": user_data["full_name"],
-                    "role": user_data["role"],
-                    "business_id": user_data["business_id"],
-                    "business_name": user_data["businesses"]["name"],
-                    "avatar_url": user_data.get("avatar_url")
-                }
+                "profile": AuthService._build_profile(user_data)
             }
             
         except HTTPException:
@@ -219,30 +235,8 @@ class AuthService:
                 )
             
             user_id = user_response.user.id
-            
-            # Get full profile
-            profile_response = supabase.table("users").select(
-                "*, businesses(*)"
-            ).eq("id", user_id).single().execute()
-            
-            if not profile_response.data:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="User profile not found"
-                )
-            
-            user_data = profile_response.data
-            
-            return {
-                "id": user_data["id"],
-                "email": user_data["email"],
-                "full_name": user_data["full_name"],
-                "role": user_data["role"],
-                "business_id": user_data["business_id"],
-                "business_name": user_data["businesses"]["name"],
-                "avatar_url": user_data.get("avatar_url"),
-                "is_active": user_data["is_active"]
-            }
+            user_data = AuthService._get_user_profile(user_id)
+            return AuthService._build_profile(user_data)
             
         except HTTPException:
             raise
