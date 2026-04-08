@@ -2,11 +2,31 @@
 Authentication service using Supabase Auth
 Handles signup, login, password reset, and session management
 """
+import logging
+import os
 import secrets
 from datetime import datetime, timedelta
+from logging.handlers import RotatingFileHandler
 from typing import Optional, Dict, Any
 from fastapi import HTTPException, status
 from app.db.supabase_client import get_supabase, get_supabase_admin
+
+# --------------- auth file logger ---------------
+_LOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "logs")
+os.makedirs(_LOG_DIR, exist_ok=True)
+
+auth_logger = logging.getLogger("auth")
+auth_logger.setLevel(logging.DEBUG)
+if not auth_logger.handlers:
+    _handler = RotatingFileHandler(
+        os.path.join(_LOG_DIR, "auth.log"),
+        maxBytes=2 * 1024 * 1024,  # 2 MB
+        backupCount=3,
+    )
+    _handler.setFormatter(
+        logging.Formatter("%(asctime)s | %(levelname)-7s | %(message)s")
+    )
+    auth_logger.addHandler(_handler)
 
 
 class AuthService:
@@ -15,6 +35,7 @@ class AuthService:
     @staticmethod
     def _raise_signup_error(error_message: str) -> None:
         normalized = error_message.lower()
+        auth_logger.warning("Signup error: %s", error_message)
 
         if "rate limit" in normalized or "too many requests" in normalized:
             raise HTTPException(
@@ -59,17 +80,20 @@ class AuthService:
 
     @staticmethod
     def _get_user_profile(user_id: str) -> Dict[str, Any]:
+        auth_logger.debug("Fetching profile for user_id=%s", user_id)
         admin_client = get_supabase_admin()
         user_response = admin_client.table("users").select(
             "*, businesses(*)"
         ).eq("id", user_id).single().execute()
 
         if not user_response.data:
+            auth_logger.error("Profile not found for user_id=%s", user_id)
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="User profile not found"
             )
 
+        auth_logger.debug("Profile loaded for user_id=%s email=%s", user_id, user_response.data.get("email"))
         return user_response.data
 
     @staticmethod
@@ -92,6 +116,7 @@ class AuthService:
         Sign up a new business owner (admin)
         Creates both the business and the admin user
         """
+        auth_logger.info("SIGNUP attempt email=%s business=%s", email, business_name)
         try:
             auth_admin = get_supabase_admin()
             db_admin = get_supabase_admin()
@@ -158,6 +183,7 @@ class AuthService:
                     detail="Failed to create user profile"
                 )
             
+            auth_logger.info("SIGNUP success email=%s user_id=%s", email, user_id)
             return {
                 "user": auth_response.user,
                 "session": getattr(auth_response, "session", None),
@@ -168,11 +194,13 @@ class AuthService:
         except HTTPException:
             raise
         except Exception as e:
+            auth_logger.exception("SIGNUP exception email=%s", email)
             AuthService._raise_signup_error(str(e))
     
     @staticmethod
     async def login(email: str, password: str) -> Dict[str, Any]:
         """Login user and return session"""
+        auth_logger.info("LOGIN attempt email=%s", email)
         try:
             auth_client = get_supabase()
             
@@ -183,15 +211,18 @@ class AuthService:
             })
             
             if not auth_response.user or not auth_response.session:
+                auth_logger.warning("LOGIN failed – invalid credentials email=%s", email)
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Invalid email or password"
                 )
             
             user_id = auth_response.user.id
+            auth_logger.debug("LOGIN auth ok user_id=%s, fetching profile", user_id)
             user_data = AuthService._get_user_profile(user_id)
             AuthService._update_last_login(user_id)
             
+            auth_logger.info("LOGIN success email=%s user_id=%s", email, user_id)
             return {
                 "user": auth_response.user,
                 "session": auth_response.session,
@@ -201,6 +232,7 @@ class AuthService:
         except HTTPException:
             raise
         except Exception as e:
+            auth_logger.exception("LOGIN exception email=%s", email)
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Login failed: {str(e)}"
@@ -222,6 +254,7 @@ class AuthService:
     @staticmethod
     async def get_current_user(access_token: str) -> Dict[str, Any]:
         """Get current user from access token"""
+        auth_logger.debug("GET_CURRENT_USER validating token")
         try:
             supabase = get_supabase()
             
@@ -229,18 +262,21 @@ class AuthService:
             user_response = supabase.auth.get_user(access_token)
             
             if not user_response.user:
+                auth_logger.warning("GET_CURRENT_USER – invalid/expired token")
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Invalid or expired token"
                 )
             
             user_id = user_response.user.id
+            auth_logger.debug("GET_CURRENT_USER token valid user_id=%s", user_id)
             user_data = AuthService._get_user_profile(user_id)
             return AuthService._build_profile(user_data)
             
         except HTTPException:
             raise
         except Exception as e:
+            auth_logger.exception("GET_CURRENT_USER exception")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials"

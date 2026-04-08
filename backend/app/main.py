@@ -6,12 +6,12 @@ from app.api.endpoints import upload, chat, business, documents, ai, dashboard, 
 
 app = FastAPI(title=settings.app_name)
 
+# CORS: allow every origin (token auth, no cookies needed)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origin_list,
-    allow_origin_regex=r"https://.*\.vercel\.app",
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
