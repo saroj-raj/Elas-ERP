@@ -3,7 +3,7 @@
 > An intelligent data analysis and visualization platform with AI-powered insights, role-based dashboards, and secure authentication.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://vizpilot.vercel.app)
-[![Backend](https://img.shields.io/badge/backend-deployed-success)](https://vizpilot-api.onrender.com/health)
+[![Backend](https://img.shields.io/badge/backend-deployed-success)](https://vizpilot.onrender.com/health)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
@@ -11,8 +11,8 @@
 ## 🚀 Live Application
 
 - **Frontend:** https://vizpilot.vercel.app
-- **Backend API:** https://vizpilot-api.onrender.com
-- **API Docs:** https://vizpilot-api.onrender.com/docs
+- **Backend API:** https://vizpilot.onrender.com
+- **API Docs:** https://vizpilot.onrender.com/docs
 
 ---
 
@@ -203,7 +203,7 @@ VizPilot/
 
 **Frontend (.env.production):**
 ```bash
-NEXT_PUBLIC_API_BASE=https://vizpilot-api.onrender.com
+NEXT_PUBLIC_API_BASE=https://vizpilot.onrender.com
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 ```

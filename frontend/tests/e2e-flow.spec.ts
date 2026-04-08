@@ -31,5 +31,5 @@ test('onboarding → upload → proposals → save → dashboard', async ({ page
   // 7) save dashboard and open role dashboard
   await page.getByRole('button', { name: /save dashboard/i }).click();
   await page.goto('/dashboard/finance');
-  await expect(page.locator('[data-test="widget-card"]')).toHaveCountGreaterThan(0);
+  await expect(page.locator('[data-test="widget-card"]')).not.toHaveCount(0);
 });

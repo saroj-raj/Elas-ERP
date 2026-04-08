@@ -1,13 +1,26 @@
+const LEGACY_API_BASE = 'https://vizpilot-api.onrender.com';
+const PRODUCTION_API_BASE = 'https://vizpilot.onrender.com';
+
+const normalizeApiBase = (value?: string) => {
+  const trimmedValue = value?.trim().replace(/\/$/, '');
+
+  if (!trimmedValue) {
+    return undefined;
+  }
+
+  return trimmedValue === LEGACY_API_BASE ? PRODUCTION_API_BASE : trimmedValue;
+};
+
 const getApiBase = () => {
-  const configuredBase = process.env.NEXT_PUBLIC_API_BASE?.trim();
+  const configuredBase = normalizeApiBase(process.env.NEXT_PUBLIC_API_BASE);
   const isLocalHost = typeof window !== 'undefined' && ['localhost', '127.0.0.1'].includes(window.location.hostname);
   const configuredIsLocalHost = configuredBase ? /localhost|127\.0\.0\.1/i.test(configuredBase) : false;
 
   if (configuredBase && (!configuredIsLocalHost || isLocalHost)) {
-    return configuredBase.replace(/\/$/, '');
+    return configuredBase;
   }
 
-  return isLocalHost ? 'http://localhost:8000' : 'https://vizpilot-api.onrender.com';
+  return isLocalHost ? 'http://localhost:8000' : PRODUCTION_API_BASE;
 };
 
 export const API_BASE = getApiBase();
